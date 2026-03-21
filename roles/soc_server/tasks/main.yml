@@ -18,6 +18,13 @@
     mode: '0644'
   become: true
 
+- name: "Garantizar que existe la red apps_network"
+  community.docker.docker_network:
+    name: apps_network
+    state: present
+    driver: bridge  # Es el estándar
+  become: true
+
 - name: "3. Levantar los contenedores (V2)"
   community.docker.docker_compose_v2:
     project_src: "/opt/soanar/soc"  # Le decimos que busque el archivo en esa carpeta
