@@ -1,9 +1,10 @@
 ---
 - name: "Asegurar que el directorio de datos para n8n existe"
-  file:
+  ansible.builtin.file:
     path: /opt/n8n_data
     state: directory
     mode: '0777'
+  become: true
 
 - name: "Desplegar n8n (Cerebro de Automatización)"
   community.docker.docker_container:
@@ -17,36 +18,42 @@
     env:
       N8N_LOG_LEVEL: info
       GENERIC_TIMEZONE: "Europe/Madrid"
+  become: true
 
 - name: "Instalar dependencias para el Agente de Wazuh"
-  apt:
+  ansible.builtin.apt:
     name: [gnupg, apt-transport-https, lsb-release]
     state: present
+  become: true
 
 - name: "Descargar e instalar el Agente de Wazuh"
-  apt:
+  ansible.builtin.apt:
     deb: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.7.2-1_amd64.deb"
+  become: true
 
 - name: "Configurar el Agente para que apunte al Servidor"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /var/ossec/etc/ossec.conf
     regexp: '<address>.*</address>'
     line: "      <address>{{ server_tailscale_ip }}</address>"
-  notify: "Reiniciar Wazuh Agent"
+  become: true
 
-- name: "Asegurar que el Agente de Wazuh está habilitado"
-  ansible.builtin.systemd:
-    name: wazuh-agent
-    state: started # <--- Aquí es donde te está petando ahora
-    enabled: yes
-
-- name: "Configurar el servicio de registro (Authd)"
-  blockinfile:
+- name: "Configurar el servicio de registro (Enrollment)"
+  ansible.builtin.blockinfile:
     path: /var/ossec/etc/ossec.conf
     insertafter: '<client>'
+    marker: ""
     block: |
       <enrollment>
         <enabled>yes</enabled>
         <address>{{ server_tailscale_ip }}</address>
         <port>1515</port>
       </enrollment>
+  become: true
+
+- name: "Asegurar que el Agente de Wazuh está habilitado y arrancado"
+  ansible.builtin.systemd:
+    name: wazuh-agent
+    state: started # Ahora sí, arrancamos con la config ya puesta
+    enabled: yes
+  become: true

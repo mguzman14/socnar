@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  wazuh-manager:
+    image: wazuh/wazuh-manager:4.7.2
+    container_name: wazuh-manager
+    restart: always
+    ports:
+      - "1514:1514/udp"
+      - "1515:1515"
+      - "55000:55000"
+    volumes:
+      - /opt/wazuh_data:/var/ossec/data
+    networks:
+      - apps_network
+
+  wazuh-indexer:
+    image: wazuh/wazuh-indexer:4.7.2
+    container_name: wazuh-indexer
+    restart: always
+    environment:
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+    volumes:
+      - /opt/wazuh_indexer_data:/var/lib/opensearch/data
+    networks:
+      - apps_network
+
+  misp:
+    image: coolacid/misp-docker:latest
+    container_name: misp
+    restart: always
+    environment:
+      - "BASE_URL=http://{{ server_tailscale_ip }}:8080" # Ansible pondrá la IP real aquí
+    ports:
+      - "8080:80"
+    networks:
+      - apps_network
+
+networks:
+  apps_network:
+    external: true

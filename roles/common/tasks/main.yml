@@ -43,9 +43,10 @@
       ansible.builtin.pip:
         name: 
           - docker
-          - docker-compose
+          # - docker-compose
         state: present
         executable: pip3
+        extra_args: "--break-system-packages"
 
 - name: "Asegurar que Docker está corriendo"
   service:
