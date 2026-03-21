@@ -31,7 +31,8 @@
 
 - name: "Desplegar Traefik + Coraza WAF + CrowdSec"
   community.docker.docker_compose_v2:
-    project_name: edge_security
+    project_src: "/opt/soanar/edge"
+    project_name: edge_node
     definition:
       version: '3.8'
       services:
