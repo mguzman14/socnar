@@ -1,0 +1,38 @@
+---
+- name: "UTILS: Ajustar memoria virtual para Wazuh Indexer"
+  ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+    reload: yes
+
+- name: "UTILS: Instalar dependencias de Python para Docker"
+  ansible.builtin.apt:
+    name: 
+      - python3-pip
+      - python3-docker
+      - python3-yaml
+    state: present
+    update_cache: yes
+
+- name: "UTILS: Configurar rotación de logs de Docker (Daemon)"
+  ansible.builtin.copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+  notify: "Reiniciar Docker"
+
+- name: "UTILS: Crear script de limpieza de emergencia en /usr/local/bin"
+  ansible.builtin.copy:
+    dest: /usr/local/bin/soanar-cleanup
+    mode: '0755'
+    content: |
+      #!/bin/bash
+      docker system prune -f --volumes
+      sync; echo 3 > /proc/sys/vm/drop_caches
