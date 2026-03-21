@@ -1,0 +1,66 @@
+---
+
+# INFRAESTRUCTURA BASE (Común a todos los hosts)
+# ============================================================
+- name: "1: Configuración Base, Docker y Red (Tailscale)"
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+  tags: [playbook_common]
+
+
+# BLOQUE 2: ENTORNO LOCAL (Tu máquina de control/análisis)
+# ============================================================
+- name: "2: Configuración del Nodo Local (ASD)"
+  hosts: asd
+  become: true
+  roles:
+    - role: soc_local      # n8n, Agentes de monitoreo local
+      tags: [local, soc_local]
+  tags: playbook_local
+
+
+# BLOQUE 3: SERVIDOR DE LA UNIVERSIDAD (UDG)
+# ============================================================
+- name: "3: Despliegue de Servicios en el udg-server"
+  hosts: udg
+  become: true
+  vars:
+    # Definimos aquí las rutas para que sean consistentes
+    base_path: "/opt/soanar"
+  
+  tasks:
+    # Tarea preparatoria para asegurar que los directorios existen con permisos correctos
+    - name: "PRE-CHECK: Asegurar estructura de directorios en /opt"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user | default('root') }}"
+      loop:
+        - "{{ base_path }}"
+        - "{{ base_path }}/wazuh"
+        - "{{ base_path }}/misp"
+        - "{{ base_path }}/edge"
+        - "{{ base_path }}/apps"
+      tags: [always]
+
+  roles:
+    # 3.1. Utilidades de sistema (Logs, monitoreo básico)
+    - role: utils
+      tags: [always, utils]
+
+    # 3.2. El Escudo: Traefik, CrowdSec, Fail2Ban
+    # Debe subir antes para proteger el acceso a lo que viene después
+    - role: edge_node
+      tags: [playbook_serv, edge]
+
+    # 3.3. El Cerebro: Wazuh Manager y MISP
+    - role: soc_server
+      tags: [playbook_serv, soc]
+
+    # 3.4. La Carga: Aplicaciones (Juice-Shop, etc.)
+    - role: apps
+      tags: [playbook_serv, apps]
