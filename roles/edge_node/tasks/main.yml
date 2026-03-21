@@ -52,7 +52,6 @@
     project_src: "/opt/soanar/edge"
     project_name: edge_node
     state: present
-    wait: yes
   become: true
 
 # --- AQUÍ SIGUEN TUS TAREAS DE CONFIGURACIÓN ---
