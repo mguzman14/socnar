@@ -30,7 +30,7 @@
       notify: "Reiniciar Fail2ban"
 
 - name: "Desplegar Traefik + Coraza WAF + CrowdSec"
-  community.docker.docker_compose_v2:
+  community.docker.docker_compose:
     project_src: "/opt/soanar/edge"
     project_name: edge_node
     definition:
