@@ -1,0 +1,5 @@
+---
+- name: "Reiniciar Fail2ban"
+  service:
+    name: fail2ban
+    state: restarted

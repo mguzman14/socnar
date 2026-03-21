@@ -1,0 +1,58 @@
+---
+- name: "Crear directorios de configuración para el Perímetro"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/traefik
+    - /opt/traefik/rules
+    - /opt/coraza/config
+
+- name: "Instalar y configurar Fail2Ban (Protección SSH)"
+  block:
+    - name: "Instalar Fail2Ban"
+      apt:
+        name: fail2ban
+        state: present
+
+    - name: "Configurar jail local para SSH"
+      copy:
+        dest: /etc/fail2ban/jail.local
+        content: |
+          [sshd]
+          enabled = true
+          port = ssh
+          filter = sshd
+          logpath = /var/log/auth.log
+          maxretry = 3
+          bantime = 1h
+      notify: "Reiniciar Fail2ban"
+
+- name: "Desplegar Traefik + Coraza WAF + CrowdSec"
+  community.docker.docker_compose_v2:
+    project_name: edge_security
+    definition:
+      version: '3.8'
+      services:
+        traefik:
+          image: traefik:v3.0
+          container_name: traefik
+          ports:
+            - "80:80"
+            - "443:443"
+          volumes:
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+            - "/opt/traefik:/etc/traefik"
+          command:
+            - "--providers.docker=true"
+            - "--entrypoints.web.address=:80"
+            - "--experimental.plugins.coraza.modulename=github.com/corazawaf/traefik-proxy-wasm"
+            - "--experimental.plugins.coraza.version=v0.2.0"
+          networks:
+            - apps_network
+
+- name: "Configurar Reglas del WAF (OWASP Core Rule Set)"
+  template:
+    src: coraza.conf.j2
+    dest: /opt/coraza/config/default.conf

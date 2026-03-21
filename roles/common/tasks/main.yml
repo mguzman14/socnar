@@ -1,0 +1,76 @@
+---
+- name: "Actualizar caché de apt"
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: "Instalar dependencias base"
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - python3-pip
+      - python3-docker
+    state: present
+
+- name: "Instalar Docker (Engine y Compose)"
+  block:
+    - name: "Añadir llave GPG oficial de Docker"
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: "Añadir repositorio de Docker"
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
+        state: present
+
+    - name: "Instalar paquetes de Docker"
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+
+- name: "Asegurar que Docker está corriendo"
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: "Configurar límites de logs globales para Docker"
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "50m",
+          "max-file": "3"
+        }
+      }
+  notify: "Reiniciar Docker"
+
+- name: "Instalar Tailscale (Tu VPN de Ciberseguridad)"
+  shell: "curl -fsSL https://tailscale.com/install.sh | sh"
+  args:
+    creates: /usr/bin/tailscale
+
+- name: "Habilitar el servicio de Tailscale"
+  service:
+    name: tailscaled
+    state: started
+    enabled: yes
+  tags: vpn
+
+- name: "Autenticar y levantar el túnel de Tailscale"
+  shell: "tailscale up --authkey={{ tailscale_key }} --accept-dns=true"
+  register: tailscale_up
+  changed_when: "'is already running' not in tailscale_up.stderr"
+  tags: vpn
