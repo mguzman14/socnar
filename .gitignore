@@ -2,3 +2,5 @@
 *.swp
 *.retry
 .env
+/hosts/asd.yml
+/hosts/udg.yml
