@@ -24,17 +24,17 @@ services:
     networks:
       - apps_network
 
-  misp:
-    image: xme9/misp:latest
-    container_name: misp
-    restart: always
-    environment:
-      - "BASE_URL=http://{{ server_tailscale_ip }}:8080"
-      - "MISP_ADMIN_PASSPHRASE=admin"
-    ports:
-      - "8080:80"
-    networks:
-      - apps_network
+  # misp:
+  #   image: xme9/misp:latest
+  #   container_name: misp
+  #   restart: always
+  #   environment:
+  #     - "BASE_URL=http://{{ server_tailscale_ip }}:8080"
+  #     - "MISP_ADMIN_PASSPHRASE=admin"
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - apps_network
 
 networks:
   apps_network:
