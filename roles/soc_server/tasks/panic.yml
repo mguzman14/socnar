@@ -1,0 +1,21 @@
+---
+- name: "PANIC SOC: Comprobar directorios de despliegue"
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  register: soc_dirs
+  loop:
+    - "/opt/soanar/wazuh"
+    - "/opt/soanar/misp"
+
+- name: "PANIC SOC: Docker Compose Down (Wazuh & MISP)"
+  community.docker.docker_compose_v2:
+    project_src: "{{ item.item }}"
+    state: absent
+    remove_images: false # Solo paramos y borramos contenedores, no borramos las imágenes (pesan mucho)
+  when: item.stat.exists
+  loop: "{{ soc_dirs.results }}"
+  ignore_errors: true
+
+- name: "PANIC SOC: Kill residual de procesos Docker"
+  ansible.builtin.shell: "docker ps -q --filter 'name=wazuh|misp' | xargs -r docker rm -f"
+  failed_when: false

@@ -1,0 +1,72 @@
+---
+- name: "Crear directorios para persistencia de datos del SOC"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/wazuh_data
+    - /opt/misp_data
+
+- name: "Desplegar el Stack del SOC (Wazuh + MISP)"
+  community.docker.docker_compose_v2:
+    project_name: soc_core
+    definition:
+      version: '3.8'
+      services:
+        # --- EL MANAGER (EL JEFE) ---
+        wazuh-manager:
+          image: wazuh/wazuh-manager:4.7.2
+          logging:
+            driver: "json-file"
+            options:
+              max-size: "100m"  # Cada archivo de log max 100MB
+              max-file: "3"     # Solo guarda los 3 últimos (Total 300MB)
+          container_name: wazuh-manager
+          restart: always
+          ports:
+            - "1514:1514/udp" # Registro de agentes
+            - "1515:1515"     # Autenticación de agentes
+            - "55000:55000"   # API de Wazuh
+          volumes:
+            - /opt/wazuh_data:/var/ossec/data
+          networks:
+            - apps_network
+
+        # --- EL INDEXER (EL ARCHIVISTA) ---
+        wazuh-indexer:
+          image: wazuh/wazuh-indexer:4.7.2
+          container_name: wazuh-indexer
+          environment:
+            - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Límite de RAM (Vital)
+            - "cluster.routing.allocation.disk.threshold_enabled=true"
+            - "cluster.routing.allocation.disk.watermark.low=85%"
+            - "cluster.routing.allocation.disk.watermark.high=90%"
+            - "cluster.routing.allocation.disk.watermark.flood_stage=95%"
+          volumes:
+            - /opt/wazuh_indexer_data:/var/lib/opensearch/data
+          networks:
+            - apps_network
+
+        # --- MISP (INTELIGENCIA DE AMENAZAS) ---
+        misp:
+          image: coolacid/misp-docker:latest
+          container_name: misp
+          restart: always
+          environment:
+            - "BASE_URL=http://{{ server_tailscale_ip }}:8080"
+          ports:
+            - "8080:80"
+          networks:
+            - apps_network
+
+- name: "Esperar a que los servicios estén listos"
+  pause:
+    seconds: 30
+
+- name: "Cron para borrar logs de Wazuh de más de 15 días"
+  cron:
+    name: "Limpieza logs Wazuh"
+    minute: "0"
+    hour: "3"
+    job: "find /opt/wazuh_data/logs/ -type f -mtime +15 -delete && docker system prune -f"
