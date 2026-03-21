@@ -1,0 +1,28 @@
+---
+- name: "PANIC: Diagnóstico previo"
+  include_role:
+    name: utils
+    tasks_from: check_resources.yml
+  tags: [always, panic_check]
+
+- name: "PANIC: Ejecutar limpieza del SOC"
+  include_role:
+    name: soc_server
+    tasks_from: panic_soc.yml
+  tags: [never, panic_soc, panic_all]
+
+- name: "PANIC: Ejecutar limpieza de Apps"
+  include_role:
+    name: apps
+    tasks_from: panic_apps.yml
+  tags: [never, panic_apps, panic_all]
+
+- name: "PANIC: Ejecutar limpieza de Edge"
+  include_role:
+    name: edge_node
+    tasks_from: panic_edge.yml
+  tags: [never, panic_edge, panic_all]
+
+- name: "PANIC: Flush de Memoria RAM"
+  shell: sync; echo 3 > /proc/sys/vm/drop_caches
+  tags: [never, panic_soc, panic_apps, panic_edge, panic_all]

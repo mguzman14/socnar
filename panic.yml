@@ -1,0 +1,50 @@
+---
+- name: "BOTÓN DEL PÁNICO"
+  hosts: all
+  become: true
+  gather_facts: yes
+
+  tasks:
+    # SECCIÓN 1: Detener servicios de Seguridad (Wazuh/MISP)
+    - name: "SECCIÓN 1: Ejecutar Pánico del SOC"
+      include_role:
+        name: soc_server
+        tasks_from: panic.yml
+      tags: [soc_server]
+
+    # SECCIÓN 2: Detener aplicaciones personalizadas
+    - name: "SECCIÓN 2: Ejecutar Pánico de Aplicaciones"
+      include_role:
+        name: apps
+        tasks_from: panic.yml
+      tags: [apps]
+
+    # SECCIÓN 3: Limpieza agresiva de recursos
+    - name: "SECCIÓN 3: Limpieza Crítica de RAM y Redes"
+      ansible.builtin.shell: |
+        sync
+        echo 3 > /proc/sys/vm/drop_caches
+        docker network prune -f
+      tags: [always]
+
+    # SECCIÓN 4: Verificación de estado post-ejecución
+    - name: "SECCIÓN 4.1: Refrescar variables de sistema (RAM)"
+      ansible.builtin.setup:
+      tags: [always]
+
+    - name: "SECCIÓN 4.2: Contar procesos activos totales"
+      ansible.builtin.shell: "ps -e | wc -l"
+      register: total_processes
+      tags: [always]
+
+    # REPORTE FINAL: Confirmación visual para tu tranquilidad
+    - name: "REPORTE FINAL DE EMERGENCIA"
+      ansible.builtin.debug:
+        msg: 
+          - "------------------------------------------"
+          - "ESTADO: SERVICIOS DETENIDOS"
+          - "HOST: {{ inventory_hostname }}"
+          - "RAM LIBRE ACTUAL: {{ ansible_facts['memfree_mb'] }} MB"
+          - "PROCESOS EN EJECUCIÓN: {{ total_processes.stdout }}"
+          - "------------------------------------------"
+      tags: [always]

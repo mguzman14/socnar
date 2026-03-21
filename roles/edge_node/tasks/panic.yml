@@ -1,0 +1,10 @@
+---
+- name: "PANIC: Detener Traefik y Seguridad Perimetral"
+  systemctl:
+    name: "{{ item }}"
+    state: stopped
+  loop:
+    - traefik
+    - crowdsec
+    - fail2ban
+  ignore_errors: true

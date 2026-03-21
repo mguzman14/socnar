@@ -1,0 +1,12 @@
+---
+- name: "PANIC APPS: Verificar directorio de aplicaciones"
+  ansible.builtin.stat:
+    path: "/opt/soanar/apps"
+  register: apps_dir
+
+- name: "PANIC APPS: Docker Compose Down"
+  community.docker.docker_compose_v2:
+    project_src: "/opt/soanar/apps"
+    state: absent
+  when: apps_dir.stat.exists
+  ignore_errors: true
