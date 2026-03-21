@@ -1,0 +1,4 @@
+.vault_pass
+*.swp
+*.retry
+.env
