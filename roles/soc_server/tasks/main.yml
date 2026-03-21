@@ -22,5 +22,5 @@
   community.docker.docker_compose_v2:
     project_src: "/opt/soanar/soc"  # Le decimos que busque el archivo en esa carpeta
     state: present
-    wait: yes
+    timeout: 300
   become: true
