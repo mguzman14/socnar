@@ -24,6 +24,24 @@ services:
     networks:
       - apps_network
 
+  wazuh-dashboard:
+    image: wazuh/wazuh-dashboard:4.7.2
+    container_name: wazuh-dashboard
+    restart: always
+    ports:
+      - "443:5601"
+    environment:
+      - WAZUH_INDEXER_HOSTS=https://wazuh-indexer:9200
+      - WAZUH_MANAGER_HOSTS=https://wazuh-manager:1515
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecretPassword123!
+      - DASHBOARD_USERNAME=admin
+      - DASHBOARD_PASSWORD=SecretPassword123!
+    networks:
+      - soc
+    depends_on:
+      - wazuh-indexer
+
   # misp:
   #   image: xme9/misp:latest
   #   container_name: misp

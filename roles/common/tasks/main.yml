@@ -75,6 +75,23 @@
       }
   notify: "Reiniciar Docker"
 
+- name: Crear directorio para la configuración de Portainer
+  ansible.builtin.file:
+    path: /opt/portainer
+    state: directory
+    mode: '0755'
+
+- name: Copiar el template del Docker Compose de Portainer
+  ansible.builtin.template:
+    src: templates/docker-compose.yml.j2
+    dest: /opt/portainer/docker-compose.yml
+    mode: '0644'
+
+- name: Levantar el contenedor de Portainer usando el Compose
+  community.docker.docker_compose_v2:
+    project_src: /opt/portainer
+    state: present
+
 - name: "Instalar Tailscale (Tu VPN de Ciberseguridad)"
   shell: "curl -fsSL https://tailscale.com/install.sh | sh"
   args:
