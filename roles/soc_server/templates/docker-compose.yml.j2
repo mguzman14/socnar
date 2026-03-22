@@ -38,7 +38,7 @@ services:
       - DASHBOARD_USERNAME=admin
       - DASHBOARD_PASSWORD=SecretPassword123!
     networks:
-      - soc
+      - apps_network
     depends_on:
       - wazuh-indexer
 
