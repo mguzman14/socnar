@@ -29,7 +29,7 @@ services:
     container_name: wazuh-dashboard
     restart: always
     ports:
-      - "443:5601"
+      - "8443:5601"
     environment:
       - WAZUH_INDEXER_HOSTS=https://wazuh-indexer:9200
       - WAZUH_MANAGER_HOSTS=https://wazuh-manager:1515
