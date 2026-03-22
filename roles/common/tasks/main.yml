@@ -87,12 +87,17 @@
     dest: /opt/portainer/docker-compose.yml
     mode: '0644'
 
-- name: Levantar el contenedor de Portainer usando el Compose
+- name: Parar y eliminar contenedor previo si existe (opcional pero seguro)
+  community.docker.docker_container:
+    name: portainer
+    state: absent
+  ignore_errors: true # Si no existe, que no de error
+
+- name: Levantar Portainer desde el Template
   community.docker.docker_compose_v2:
     project_src: /opt/portainer
     state: present
-    pull: always
-    remove_orphans: yes
+    wait: yes
 
 - name: "Instalar Tailscale (Tu VPN de Ciberseguridad)"
   shell: "curl -fsSL https://tailscale.com/install.sh | sh"
