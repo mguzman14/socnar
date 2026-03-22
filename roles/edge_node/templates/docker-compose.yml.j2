@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   traefik:
     image: traefik:v3.0
@@ -33,4 +32,4 @@ services:
 
 networks:
   apps_network:
-    external: true
+    driver: bridge  # <--- Mejor que Docker la cree si no existe

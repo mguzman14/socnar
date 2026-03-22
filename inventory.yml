@@ -2,5 +2,4 @@
 all:
   hosts:
     asd:
-      ansible_connection: local
     udg:

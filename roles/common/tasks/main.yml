@@ -19,15 +19,23 @@
 
 - name: "Instalar Docker (Engine y Compose)"
   block:
+    - name: "Crear directorio para llaves de paquetes"
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
     - name: "Añadir llave GPG oficial de Docker"
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+      get_url:
+        url: https://download.docker.com/linux/debian/gpg
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
 
     - name: "Añadir repositorio de Docker"
       apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
         state: present
+        filename: docker
 
     - name: "Instalar paquetes de Docker"
       apt:
