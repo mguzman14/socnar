@@ -1,0 +1,34 @@
+name: Deploy Ansible Playbooks
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_host:
+        description: 'Selecciona el host de destino'
+        required: true
+        default: 'whale'
+        type: choice
+        options:
+          - udg
+          - asd
+          - all
+      playbook:
+        description: '¿Qué quieres desplegar?'
+        required: true
+        default: 'site.yml'
+        type: choice
+        options:
+          - site.yml
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Ejecutar Ansible
+        run: |
+          ansible-playbook -i inventory.yml ${{ github.event.inputs.playbook }} \
+          --limit ${{ github.event.inputs.target_host }} \
+          --extra-vars "ansible_become_pass=${{ secrets.ANSIBLE_BECOME_PASS }}"
