@@ -1,0 +1,18 @@
+<ossec_config>
+  <client>
+    <server>
+      <address>{{ server_tailscale_ip }}</address>
+      <port>1514</port>
+      <protocol>tcp</protocol>
+    </server>
+    <config-recorder>yes</config-recorder>
+    <enrollment>
+      <enabled>yes</enabled>
+      <address>{{ server_tailscale_ip }}</address>
+      <port>1515</port>
+    </enrollment>
+  </client>
+  <logging>
+    <log_format>plain</log_format>
+  </logging>
+  </ossec_config>

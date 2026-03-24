@@ -31,25 +31,15 @@
     deb: "https://packages.wazuh.com/4.x/apt/pool/main/w/wazuh-agent/wazuh-agent_4.7.2-1_amd64.deb"
   become: true
 
-- name: "Configurar el Agente para que apunte al Servidor"
-  ansible.builtin.lineinfile:
-    path: /var/ossec/etc/ossec.conf
-    regexp: '<address>.*</address>'
-    line: "      <address>{{ server_tailscale_ip }}</address>"
+- name: "Configurar ossec.conf desde template"
+  ansible.builtin.template:
+    src: ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+    owner: root
+    group: ossec
+    mode: '0640'
   become: true
-
-- name: "Configurar el servicio de registro (Enrollment)"
-  ansible.builtin.blockinfile:
-    path: /var/ossec/etc/ossec.conf
-    insertafter: '<client>'
-    marker: ""
-    block: |
-      <enrollment>
-        <enabled>yes</enabled>
-        <address>{{ server_tailscale_ip }}</address>
-        <port>1515</port>
-      </enrollment>
-  become: true
+  notify: Restart Wazuh Agent  # Esto asegura que se reinicie si el archivo cambia
 
 - name: "Asegurar que el Agente de Wazuh está habilitado y arrancado"
   ansible.builtin.systemd:
