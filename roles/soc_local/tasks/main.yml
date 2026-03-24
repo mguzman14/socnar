@@ -39,7 +39,7 @@
     group: wazuh
     mode: '0640'
   become: true
-  notify: Restart Wazuh Agent  # Esto asegura que se reinicie si el archivo cambia
+  notify: Reiniciar Wazuh Agent  # Esto asegura que se reinicie si el archivo cambia
 
 - name: "Asegurar que el Agente de Wazuh está habilitado y arrancado"
   ansible.builtin.systemd:
