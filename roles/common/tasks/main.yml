@@ -101,6 +101,7 @@
 
 - name: "Instalar Tailscale (Tu VPN de Ciberseguridad)"
   shell: "curl -fsSL https://tailscale.com/install.sh | sh"
+  tags: vpn
   args:
     creates: /usr/bin/tailscale
 

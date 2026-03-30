@@ -1,5 +1,6 @@
 ---
 - name: "Asegurar que el directorio de datos para n8n existe"
+  tags: n8n
   ansible.builtin.file:
     path: /opt/n8n_data
     state: directory
@@ -7,6 +8,7 @@
   become: true
 
 - name: "Desplegar n8n (Cerebro de Automatización)"
+  tags: n8n
   community.docker.docker_container:
     name: n8n
     image: n8nio/n8n:latest

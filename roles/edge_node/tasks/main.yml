@@ -20,11 +20,13 @@
 - name: "Instalar y configurar Fail2Ban (Protección SSH)"
   block:
     - name: "Instalar Fail2Ban"
+      tags: fail2ban
       ansible.builtin.apt:
         name: fail2ban
         state: present
 
     - name: "Configurar jail local para SSH"
+      tags: fail2ban
       ansible.builtin.copy:
         dest: /etc/fail2ban/jail.local
         content: |
@@ -48,6 +50,7 @@
   become: true
 
 - name: "Desplegar Traefik + Coraza WAF + CrowdSec (V2)"
+  tags: [traefik, coraza, crowdsec]
   community.docker.docker_compose_v2:
     project_src: "/opt/soanar/edge"
     project_name: edge_node
@@ -57,6 +60,7 @@
 # --- AQUÍ SIGUEN TUS TAREAS DE CONFIGURACIÓN ---
 
 - name: "Configurar Reglas del WAF (OWASP Core Rule Set)"
+  tags: coraza
   ansible.builtin.template:
     src: coraza.conf.j2
     dest: /opt/coraza/config/default.conf
