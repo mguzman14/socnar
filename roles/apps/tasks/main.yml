@@ -1,7 +1,7 @@
 ---
 - name: "Asegurar que la red de aplicaciones existe"
   community.docker.docker_network:
-    name: apps_network
+    name: network_all
     state: present
 
 - name: "Desplegar OWASP Juice-Shop (Vulnerable App)"
@@ -9,7 +9,7 @@
     name: juice-shop
     image: bkimminich/juice-shop:latest
     networks:
-      - name: apps_network
+      - name: network_all
     restart_policy: always
     labels:
       # 1. Habilitar Traefik para este contenedor

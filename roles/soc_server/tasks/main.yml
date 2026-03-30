@@ -18,9 +18,9 @@
     mode: '0644'
   become: true
 
-- name: "Garantizar que existe la red apps_network"
+- name: "Garantizar que existe la red network_all"
   community.docker.docker_network:
-    name: apps_network
+    name: network_all
     state: present
     driver: bridge  # Es el estándar
   become: true

@@ -11,9 +11,9 @@
     - /opt/soanar/edge  # <-- Directorio nuevo para el docker-compose.yml
   become: true
 
-- name: "Garantizar que existe la red apps_network"
+- name: "Garantizar que existe la red network_all"
   community.docker.docker_network:
-    name: apps_network
+    name: network_all
     state: present
   become: true
 
