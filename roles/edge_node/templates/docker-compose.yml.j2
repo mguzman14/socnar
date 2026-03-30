@@ -15,7 +15,7 @@ services:
       - "--experimental.plugins.coraza.modulename=github.com/corazawaf/traefik-proxy-wasm"
       - "--experimental.plugins.coraza.version=v0.2.0"
     networks:
-      - apps_network
+      - network_all
 
   crowdsec:
     image: crowdsecurity/crowdsec
@@ -28,8 +28,8 @@ services:
       - /opt/soanar/edge/crowdsec/data:/var/lib/crowdsec/data  # <--- ESTE ES EL QUE FALTA
       - /var/log/traefik:/var/log/traefik:ro
     networks:
-      - apps_network
+      - network_all
 
 networks:
-  apps_network:
+  network_all:
     driver: bridge  # <--- Mejor que Docker la cree si no existe

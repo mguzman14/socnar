@@ -10,7 +10,7 @@ services:
     volumes:
       - /opt/wazuh_data:/var/ossec/data
     networks:
-      - apps_network
+      - network_all
 
   wazuh-indexer:
     image: wazuh/wazuh-indexer:4.7.2
@@ -22,7 +22,7 @@ services:
     volumes:
       - /opt/wazuh_indexer_data:/var/lib/opensearch/data
     networks:
-      - apps_network
+      - network_all
 
   wazuh-dashboard:
     image: wazuh/wazuh-dashboard:4.7.2
@@ -38,7 +38,7 @@ services:
       - DASHBOARD_USERNAME=admin
       - DASHBOARD_PASSWORD=SecretPassword123!
     networks:
-      - apps_network
+      - network_all
     depends_on:
       - wazuh-indexer
 
@@ -52,8 +52,8 @@ services:
   #   ports:
   #     - "8080:80"
   #   networks:
-  #     - apps_network
+  #     - network_all
 
 networks:
-  apps_network:
+  network_all:
     external: true
