@@ -8,7 +8,7 @@
     - /opt/traefik
     - /opt/traefik/rules
     - /opt/coraza/config
-    - /opt/soanar/edge  # <-- Directorio nuevo para el docker-compose.yml
+    - /opt/socnar/edge  # <-- Directorio nuevo para el docker-compose.yml
   become: true
 
 - name: "Garantizar que existe la red network_all"
@@ -45,14 +45,14 @@
 - name: "Generar archivo docker-compose.yml desde Template"
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: /opt/soanar/edge/docker-compose.yml
+    dest: /opt/socnar/edge/docker-compose.yml
     mode: '0644'
   become: true
 
 - name: "Desplegar Traefik + Coraza WAF + CrowdSec (V2)"
   tags: [traefik, coraza, crowdsec]
   community.docker.docker_compose_v2:
-    project_src: "/opt/soanar/edge"
+    project_src: "/opt/socnar/edge"
     project_name: edge_node
     state: present
   become: true

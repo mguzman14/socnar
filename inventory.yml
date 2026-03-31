@@ -1,5 +1,21 @@
----
 all:
   hosts:
-    asd:
-    udg:
+    debian-whale:
+      ansible_host: debian-whale.tailbbc703.ts.net
+      ansible_user: whale
+      server_tailscale_ip: "debian-whale.tailbbc703.ts.net"
+      # ansible_connection: local
+    debian-shark:
+      ansible_host: debian-shark.tailbbc703.ts.net
+      ansible_user: shark
+      server_tailscale_ip: "shark-whale.tailbbc703.ts.net"
+      # ansible_connection: local
+
+  children:
+    udg: { hosts: { debian-whale: } }
+    asd: { hosts: { debian-shark: } }
+    # Agrupamos todos los requisitos de Wazuh en un solo bloque
+    wazuh_manager: { hosts: { debian-whale: } }
+    wazuh_indexer: { hosts: { debian-whale: } }
+    wazuh_dashboard: { hosts: { debian-whale: } }
+   

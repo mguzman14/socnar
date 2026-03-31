@@ -29,7 +29,7 @@
   become: true
   vars:
     # Definimos aquí las rutas para que sean consistentes
-    base_path: "/opt/soanar"
+    base_path: "/opt/socnar"
   
   tasks:
     # Tarea preparatoria para asegurar que los directorios existen con permisos correctos

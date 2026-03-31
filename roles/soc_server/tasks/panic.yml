@@ -4,8 +4,8 @@
     path: "{{ item }}"
   register: soc_dirs
   loop:
-    - "/opt/soanar/wazuh"
-    - "/opt/soanar/misp"
+    - "/opt/socnar/wazuh"
+    - "/opt/socnar/misp"
 
 - name: "PANIC SOC: Docker Compose Down (Wazuh & MISP)"
   community.docker.docker_compose_v2:

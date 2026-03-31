@@ -24,8 +24,8 @@ services:
     environment:
       - COLLECTIONS=crowdsecurity/linux crowdsecurity/traefik
     volumes:
-      - /opt/soanar/edge/crowdsec/config:/etc/crowdsec
-      - /opt/soanar/edge/crowdsec/data:/var/lib/crowdsec/data  # <--- ESTE ES EL QUE FALTA
+      - /opt/socnar/edge/crowdsec/config:/etc/crowdsec
+      - /opt/socnar/edge/crowdsec/data:/var/lib/crowdsec/data  # <--- ESTE ES EL QUE FALTA
       - /var/log/traefik:/var/log/traefik:ro
     networks:
       - network_all
