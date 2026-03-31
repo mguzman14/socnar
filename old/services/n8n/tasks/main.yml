@@ -1,0 +1,23 @@
+---
+- name: "Asegurar que el directorio de datos para n8n existe"
+  tags: n8n
+  ansible.builtin.file:
+    path: /opt/n8n_data
+    state: directory
+    mode: '0777'
+  become: true
+
+- name: "Desplegar n8n (Cerebro de Automatización)"
+  tags: n8n
+  community.docker.docker_container:
+    name: n8n
+    image: n8nio/n8n:latest
+    restart_policy: always
+    ports:
+      - "5678:5678"
+    volumes:
+      - /opt/n8n_data:/home/node/.n8n
+    env:
+      N8N_LOG_LEVEL: info
+      GENERIC_TIMEZONE: "Europe/Madrid"
+  become: true
