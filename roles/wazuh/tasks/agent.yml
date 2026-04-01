@@ -1,0 +1,55 @@
+---
+
+- name: Agent | Instalar dependencias
+  apt:
+    name: [curl, gnupg2, apt-transport-https]
+    state: present
+    update_cache: yes
+
+
+- name: Agent | Crear directorio para las claves si no existe"
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Agent | Descargar clave GPG de Wazuh
+  get_url:
+    url: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+    dest: /usr/share/keyrings/wazuh.gpg
+    mode: '0644'
+
+- name: "Agent | Añadir repositorio de Wazuh usando la nueva clave"
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main"
+    state: present
+    filename: wazuh
+
+- name: "Agent | Especificar (y actualizar) versión"
+  apt:
+    name: "wazuh-agent=4.14.4-1"  # Importante añadir el '-1' (revisión del paquete)
+    state: present
+    update_cache: yes
+    allow_downgrade: yes  # Por si acaso hubiera una versión más nueva instalada
+
+- name: "Agent | Instalar wazuh-agent"
+  apt:
+    name: wazuh-agent
+    state: present
+  environment:
+    WAZUH_MANAGER: "{{ wazuh_manager_host }}"
+
+- name: Agent | Configurar ossec.conf desde plantilla
+  template:
+    src: ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+    owner: root
+    group: wazuh
+    mode: '0640'
+  notify: Reiniciar Wazuh Agent
+
+- name: Agent | Asegurar que el servicio está activo
+  systemd:
+    name: wazuh-agent
+    state: started
+    enabled: yes

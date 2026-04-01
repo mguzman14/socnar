@@ -10,4 +10,14 @@ all:
       ansible_user: shark
       server_tailscale_ip: "shark-whale.tailbbc703.ts.net"
       # ansible_connection: local
+
+  children:
+    wazuh_manager:
+      hosts:
+        debian-whale:
+    wazuh_agents:
+      hosts:
+        debian-shark:
+      vars:
+        wazuh_manager_host: "{{ groups['wazuh_manager'][0] }}"
    

@@ -12,10 +12,17 @@
     - role: misp
       tags: [ 'misp', 'config', 'deploy', 'check' ]
   
-# - name: "Wazuh y la tropa"
-#   hosts: debian-whale
-#   become: yes
-#   roles:
-#     - role: wazuh
-#       tags: [ 'wazuh-manager', 'config', 'deploy', 'check' ]
+- name: "Wazuh manager y la tropa"
+  hosts: wazuh-manager
+  become: yes
+  roles:
+    - role: wazuh
+      tags: [ 'wazuh-manager' ]
+
+- name: "Wazuh Agent"
+  hosts: wazuh_agents
+  become: yes
+  roles:
+    - role: wazuh
+      tags: [ 'wazuh-agent' ]
 

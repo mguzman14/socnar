@@ -1,0 +1,27 @@
+<ossec_config>
+  <client>
+    <server>
+      <address>{{ wazuh_manager_host }}</address>
+      <port>1514</port>
+      <protocol>tcp</protocol>
+    </server>
+    <auto_restart>yes</auto_restart>
+    <time-reconnect>60</time-reconnect>
+  </client>
+
+  <syscheck>
+    <disabled>no</disabled>
+    <frequency>43200</frequency>
+    <directories check_all="yes">/etc,/usr/bin,/usr/sbin</directories>
+  </syscheck>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/auth.log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/syslog</location>
+  </localfile>
+</ossec_config>
