@@ -1,0 +1,19 @@
+---
+- name: "F2B | Instalar paquete fail2ban"
+  apt:
+    name: fail2ban
+    state: present
+    update_cache: yes
+
+- name: "F2B | Configurar jail local para SSH"
+  copy:
+    dest: /etc/fail2ban/jail.local
+    content: |
+      [sshd]
+      enabled = true
+      port = ssh
+      filter = sshd
+      logpath = /var/log/auth.log
+      maxretry = 3
+      bantime = 1h
+  notify: Restart Fail2ban

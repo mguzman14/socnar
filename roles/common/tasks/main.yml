@@ -1,0 +1,17 @@
+---
+# Este archivo coordina las tareas del sistema base
+- name: "SSH"
+  include_tasks: ssh.yml
+  tags: [ 'common', 'ssh' ]
+
+- name: "Fail2ban"
+  include_tasks: f2b.yml
+  tags: [ 'common', 'f2b' ]
+
+- name: "Docker"
+  include_tasks: docker.yml
+  tags: [ 'common', 'docker' ]
+
+- name: "VPN: Tailscale"
+  include_tasks: vpn.yml
+  tags: [ 'common', 'vpn' ]

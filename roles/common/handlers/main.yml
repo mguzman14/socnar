@@ -1,0 +1,16 @@
+---
+# Handlers para el rol Common de SOCNAR
+- name: Restart SSH
+  service:
+    name: ssh
+    state: restarted
+
+- name: Restart Fail2ban
+  service:
+    name: fail2ban
+    state: restarted
+
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted

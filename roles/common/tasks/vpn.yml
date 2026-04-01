@@ -1,0 +1,11 @@
+---
+- name: "VPN | Instalar Tailscale mediante script oficial"
+  shell: curl -fsSL https://tailscale.com/install.sh | sh
+  args:
+    creates: /usr/bin/tailscale
+
+- name: "VPN | Autenticar en Tailscale (Requiere AuthKey en variables)"
+  command: tailscale up --authkey={{ tailscale_authkey }}
+  register: tailscale_result
+  changed_when: "'is already running' not in tailscale_result.stderr"
+  when: tailscale_authkey is defined

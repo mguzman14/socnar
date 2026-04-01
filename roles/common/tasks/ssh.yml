@@ -1,0 +1,18 @@
+- name: "SSH | Verificar si el paquete openssh-server está instalado"
+  ansible.builtin.package_facts:
+    manager: auto
+  tags: [ 'ssh', 'check' ]
+
+- name: "SSH | Validar presencia del binario"
+  ansible.builtin.stat:
+    path: /usr/sbin/sshd
+  register: sshd_binary
+  failed_when: not sshd_binary.stat.exists
+  tags: [ 'ssh', 'check' ]
+
+- name: "SSH | Verificar si el servicio está activo y habilitado"
+  ansible.builtin.systemd:
+    name: ssh
+  register: ssh_service_status
+  failed_when: ssh_service_status.status.ActiveState != 'active'
+  tags: [ 'ssh', 'check' ]
