@@ -2,14 +2,14 @@
   hosts: debian-whale
   become: true
   roles:
-    - role: internal/common
+    - role: common
       tags: [ 'common', 'ssh', 'f2b', 'docker', 'vpn', 'config', 'deploy' ]
 
 - name: "MISP"
   hosts: debian-whale
   become: yes
   roles:
-    - role: internal/misp
+    - role: misp
       tags: [ 'misp', 'config', 'deploy', 'check' ]
   
 # - name: "Wazuh y la tropa"
