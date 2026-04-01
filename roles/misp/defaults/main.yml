@@ -1,0 +1,5 @@
+---
+misp_base_dir: "/opt/socnar/misp"
+misp_container_name: "misp-server"
+misp_db_container_name: "misp-db"
+# Aquí podrías añadir versiones de imagen si quisieras bloquearlas

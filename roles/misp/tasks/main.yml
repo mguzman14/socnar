@@ -1,0 +1,8 @@
+---
+- name: "[SOCNAR] Desplegando MISP"
+  include_tasks: deploy.yml
+  tags: [ 'misp', 'deploy' ]
+
+- name: "[SOCNAR] Verificando Salud de MISP"
+  include_tasks: check.yml
+  tags: [ 'misp', 'check' ]
