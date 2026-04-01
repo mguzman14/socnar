@@ -1,0 +1,51 @@
+---
+
+# git clone del repo de github
+# ir a la carpeta de single-node
+# docker compose -f generate-indexer-certs.yml run --rm generator
+# docker compose up -d
+
+# TODO: AUTOMATIZAR CONFIG (con templates) Y LEVANTAMIENTO DE WAZUH CON ANSIBLE
+
+
+# - name: Desplegar Wazuh Single Node con Docker
+#   hosts: debian-whale
+#   become: yes
+#   vars:
+#     wazuh_dir: "/path/of/the/directory"
+
+#   tasks:
+#     - name: 1. Configurar límites del sistema (Kernel)
+#       sysctl:
+#         name: vm.max_map_count
+#         value: '262144'
+#         state: present
+#         reload: yes
+
+#     - name: 2. Clonar repositorio de Wazuh Docker
+#       git:
+#         repo: 'https://github.com/wazuh/wazuh-docker.git'
+#         dest: "{{ wazuh_dir }}"
+#         version: "v4.7.2"
+#         force: yes
+
+#     - name: 3. Generar certificados del Indexer
+#       community.docker.docker_compose_v2:
+#         project_src: "{{ wazuh_dir }}/single-node"
+#         files:
+#           - generate-indexer-certs.yml
+#         shell_interpretation: true
+#       register: cert_gen
+    
+#     - name: Ejecutar generador de certificados manualmente (Fallback)
+#       command: "docker compose -f generate-indexer-certs.yml run --rm generator"
+#       args:
+#         chdir: "{{ wazuh_dir }}/single-node"
+#         creates: "{{ wazuh_dir }}/single-node/config/wazuh_indexer_ssl_certs/root-ca.pem"
+
+#     - name: 4. Levantar el Stack de Wazuh
+#       community.docker.docker_compose_v2:
+#         project_src: "{{ wazuh_dir }}/single-node"
+#         state: present
+#         wait: yes
+#         remove_orphans: yes

@@ -11,3 +11,11 @@
   roles:
     - role: internal/misp
       tags: [ 'misp', 'config', 'deploy', 'check' ]
+  
+# - name: "Wazuh y la tropa"
+#   hosts: debian-whale
+#   become: yes
+#   roles:
+#     - role: wazuh
+#       tags: [ 'wazuh-manager', 'config', 'deploy', 'check' ]
+
