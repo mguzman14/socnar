@@ -15,3 +15,7 @@
 - name: "VPN: Tailscale"
   include_tasks: vpn.yml
   tags: [ 'common', 'vpn' ]
+
+- name: "Portainer"
+  include_tasks: portainer.yml
+  tags: [ 'common', 'portainer' ]

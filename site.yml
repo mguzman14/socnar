@@ -3,7 +3,7 @@
   become: true
   roles:
     - role: common
-      tags: [ 'common', 'ssh', 'f2b', 'docker', 'vpn', 'config', 'deploy' ]
+      tags: [ 'common', 'ssh', 'f2b', 'docker', 'vpn', 'config', 'deploy', 'portainer' ]
 
 - name: "MISP"
   hosts: debian-whale
