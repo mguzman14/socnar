@@ -1,0 +1,24 @@
+
+- name: "Generar archivo docker-compose.yml desde Template"
+  ansible.builtin.template:
+    src: dcompose-traefik.yml.j2
+    dest: /opt/traefik/docker-compose.yml
+    mode: '0644'
+  become: true
+
+- name: "Desplegar Traefik + Coraza WAF"
+  tags: [traefik]
+  community.docker.docker_compose_v2:
+    project_src: "/opt/traefik"
+    state: present
+    recreate: always
+  become: true
+
+# --- AQUÍ SIGUEN TUS TAREAS DE CONFIGURACIÓN ---
+
+- name: "Configurar Reglas del WAF (OWASP Core Rule Set)"
+  tags: coraza
+  ansible.builtin.template:
+    src: coraza.conf.j2
+    dest: /opt/coraza/config/default.conf
+  become: true
