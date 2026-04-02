@@ -8,12 +8,18 @@ services:
     pid: "host" 
     privileged: true
     restart: always
+    ports:
+      - "8080:4040"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command:
       - "--probe.docker=true"
       - "--weave=false"
       - "--app.http.address=:9090"
+
+networks:
+  network_all:
+    external: true
 
 
 
