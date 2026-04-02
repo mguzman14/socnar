@@ -3,7 +3,15 @@
   become: true
   roles:
     - role: common
-      tags: [ 'common', 'ssh', 'f2b', 'docker', 'vpn', 'config', 'deploy', 'portainer' ]
+      tags: [ 'common', 'ssh', 'docker', 'vpn', 'config', 'deploy', 'portainer' ]
+
+- name: "Fail2ban"
+  hosts: all
+  become: true
+  roles:
+  - role: fail2ban
+      tags: [ 'fail2ban' ]
+  
 
 - name: "MISP"
   hosts: debian-whale
