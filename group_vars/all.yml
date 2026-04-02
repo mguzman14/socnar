@@ -8,8 +8,3 @@ wazuh_indexer_mem_limit: "2g"
 crowdsec_api_key: "lapi_key_generada"
 tailscale_key: "tskey-auth-kfQR5C8k9B11CNTRL-YByCZwrpUQWoVotN8iwZQWw5dasoujZL1"
 
-wazuh_dashboard_labels:
-  - "traefik.enable=true"
-  - "traefik.http.routers.wazuh.rule=Host(`wazuh.{{ socnar_domain }}`)"
-  - "traefik.http.services.wazuh.loadbalancer.server.port=5601"
-  - "traefik.docker.network={{ socnar_network }}"

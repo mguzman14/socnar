@@ -20,12 +20,12 @@
     - role: misp
       tags: [ 'misp', 'config', 'deploy', 'check' ]
   
-- name: "Wazuh manager y la tropa"
-  hosts: wazuh-manager
-  become: yes
-  roles:
-    - role: wazuh
-      tags: [ 'wazuh-manager' ]
+# - name: "Wazuh manager y la tropa"
+#   hosts: wazuh-manager
+#   become: yes
+#   roles:
+#     - role: wazuh
+#       tags: [ 'wazuh-manager' ]
 
 - name: "Wazuh Agent"
   hosts: wazuh_agents
@@ -47,3 +47,25 @@
   roles:
     - role: monitor
       tags: [ 'monitor' ]
+
+
+- name: "Traefik + Coraza"
+  hosts: all
+  become: yes
+  roles:
+    - role: traefik
+      tags: [ 'traefik' ]
+
+- name: "Crowdsec"
+  hosts: all
+  become: yes
+  roles:
+    - role: crowdsec
+      tags: [ 'crowdsec' ]
+
+- name: "n8n"
+  hosts: all
+  become: yes
+  roles:
+    - role: n8n
+      tags: [ 'n8n' ]
