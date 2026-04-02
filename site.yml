@@ -1,5 +1,5 @@
 - name: "Infraestructura Base"
-  hosts: debian-whale
+  hosts: all
   become: true
   roles:
     - role: common
