@@ -1,0 +1,19 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec
+    container_name: crowdsec
+    restart: always
+    environment:
+      - COLLECTIONS=crowdsecurity/linux crowdsecurity/traefik
+    volumes:
+      - /opt/socnar/edge/crowdsec/config:/etc/crowdsec
+      - /opt/socnar/edge/crowdsec/data:/var/lib/crowdsec/data
+      - /var/log/traefik:/var/log/traefik:ro
+    networks:
+      - network_all
+
+networks:
+  network_all:
+    external: true
+
+    
