@@ -26,3 +26,9 @@
     - role: wazuh
       tags: [ 'wazuh-agent' ]
 
+- name: "Audit"
+  hosts: all
+  become: yes
+  roles:
+    - role: audit
+      tags: [ 'audit' ]
