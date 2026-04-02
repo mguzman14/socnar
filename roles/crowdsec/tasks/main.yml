@@ -1,0 +1,20 @@
+
+- name: "Asegurar que el directorio de configuración existe"
+  file:
+    path: "/opt/crowdsec"
+    state: directory
+    mode: '0755'
+    owner: root  # O tu usuario si prefieres
+    group: root
+
+- name: "Generar archivo docker-compose.yml desde Template"
+  template:
+    src: dcompose-crowdsec.yml.j2
+    dest: /opt/crowdsec/docker-compose.yml
+
+
+- name: "Desplegar Crowdsec"
+  community.docker.docker_compose_v2:
+    project_src: "/opt/crowdsec"
+    state: present
+  become: true
