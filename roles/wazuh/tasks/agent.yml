@@ -38,6 +38,7 @@
     state: present
   environment:
     WAZUH_MANAGER: "{{ wazuh_manager_host }}"
+    WAZUH_AGENT_NAME: "{{ ansible_user }}"
 
 - name: Agent | Configurar ossec.conf desde plantilla
   template:

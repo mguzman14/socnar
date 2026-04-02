@@ -17,6 +17,7 @@ all:
         debian-whale:
     wazuh_agents:
       hosts:
+        debian-whale:
         debian-shark:
       vars:
         wazuh_manager_host: "{{ groups['wazuh_manager'][0] }}"
