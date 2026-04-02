@@ -1,0 +1,25 @@
+---
+- name: "Audit | Crear directorio temporal de tests"
+  ansible.builtin.file:
+    path: /tmp/wazuh_tests
+    state: directory
+    mode: '0700'
+
+- name: "Audit | Copiar scripts de simulación desde files/"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/tmp/wazuh_tests/{{ item | basename }}"
+    mode: '0700'
+  with_fileglob:
+    - "files/*.sh"  # Busca dentro de la carpeta files del rol
+
+- name: "Audit | Ejecutar todos los simulacros encontrados"
+  ansible.builtin.shell: "/tmp/wazuh_tests/{{ item | basename }}"
+  loop: "{{ query('fileglob', 'files/*.sh') }}"
+  ignore_errors: yes
+  become: yes
+
+- name: "Audit | Limpiar rastro de auditoría"
+  ansible.builtin.file:
+    path: /tmp/wazuh_tests
+    state: absent
