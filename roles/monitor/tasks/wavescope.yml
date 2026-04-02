@@ -1,0 +1,23 @@
+---
+- name: Crear directorio para el compose de Scope
+  file:
+    path: /opt/weavescope
+    state: directory
+    mode: '0755'
+
+- name: Asegurar que no existan contenedores previos con el mismo nombre
+  docker_container:
+    name: weavescope
+    state: absent
+
+- name: Desplegar template de Docker Compose
+  template:
+    src: dcompose-wavescope.yml.j2
+    dest: /opt/weavescope/docker-compose.yml
+    mode: '0644'
+
+- name: Levantar el contenedor de Weave Scope
+  community.docker.docker_compose_v2:
+    project_src: /opt/weavescope
+    state: present
+    pull: always  # Esto asegura que baje la imagen correcta si hay dudas

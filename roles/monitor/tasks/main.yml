@@ -1,0 +1,7 @@
+- name: "Portainer"
+  include_tasks: portainer.yml
+  tags: [ 'monitor', 'portainer' ]
+
+- name: "Wavescope"
+  include_tasks: wavescope.yml
+  tags: [ 'monitor', 'wavescope' ]

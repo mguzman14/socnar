@@ -40,3 +40,10 @@
   roles:
     - role: audit
       tags: [ 'audit' ]
+
+- name: "Monitoring tools"
+  hosts: all
+  become: yes
+  roles:
+    - role: monitor
+      tags: [ 'monitor' ]
