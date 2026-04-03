@@ -1,8 +1,52 @@
 ---
-- name: "[SOCNAR] Desplegando MISP"
-  include_tasks: deploy.yml
-  tags: [ 'misp', 'deploy' ]
 
-- name: "[SOCNAR] Verificando Salud de MISP"
-  include_tasks: check.yml
-  tags: [ 'misp', 'check' ]
+- name: "MISP | Asegurar directorios de persistencia"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: root
+    group: root
+  loop:
+    - "{{ misp_base_dir }}"
+    - "{{ misp_base_dir }}/mysql"
+    - "{{ misp_base_dir }}/data"
+
+- name: "MISP | Generar archivo de configuración .env"
+  ansible.builtin.template:
+    src: ".env.j2"
+    dest: "{{ misp_base_dir }}/.env"
+    mode: '0600'
+
+- name: "MISP | Generar Docker Compose"
+  ansible.builtin.template:
+    src: dcompose-misp.yml.j2
+    dest: "{{ misp_base_dir }}/docker-compose.yml"
+    mode: '0644'
+
+- name: "MISP | Levantar Stack con Docker Compose"
+  community.docker.docker_compose_v2:
+    project_src: "{{ misp_base_dir }}"
+    state: present
+    pull: always  # Estándar: intentar bajar la última versión si no existe
+    remove_orphans: yes # Limpia contenedores antiguos si cambias el nombre en el .yml
+
+- name: "MISP | Esperar a que el puerto HTTPS esté abierto"
+  wait_for:
+    port: "{{ misp_https_port }}" 
+    delay: 10
+    timeout: 300
+
+- name: "MISP | Verificar respuesta de la interfaz web"
+  uri:
+    url: "{{ misp_base_url }}"
+    validate_certs: no
+    status_code: [200, 302]     # Aceptamos 302 porque MISP suele redirigir al login
+  register: misp_web_status
+  until: misp_web_status.status in [200, 302]
+  retries: 20
+  delay: 15
+
+- name: "MISP | Reportar estado"
+  debug:
+    msg: "MISP está arriba en {{ misp_base_url }} respondiendo con código {{ misp_web_status.status }}"

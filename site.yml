@@ -19,9 +19,16 @@
   hosts: debian-whale
   become: yes
   gather_facts: no
+  vars:
+    # --- VARIABLES GLOBALES PARA MISP ---
+    misp_base_dir: "/opt/misp"
+    misp_https_port: "8448"
+    misp_http_port: "8088"
+    misp_base_url: "https://{{ ansible_host }}:{{ misp_https_port }}"
+    
   roles:
     - role: misp
-      tags: [ 'misp', 'config', 'deploy', 'check' ]
+      tags: [ 'misp' ]
   
 # - name: "Wazuh manager y la tropa"
 #   hosts: wazuh-manager

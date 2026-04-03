@@ -2,12 +2,12 @@
 # Este archivo coordina las tareas del sistema base
 - name: "SSH"
   include_tasks: ssh.yml
-  tags: [ 'common', 'ssh' ]
+  tags: [ 'ssh' ]
 
 - name: "Docker"
   include_tasks: docker.yml
-  tags: [ 'common', 'docker' ]
+  tags: [ docker' ]
 
 - name: "VPN: Tailscale"
   include_tasks: vpn.yml
-  tags: [ 'common', 'vpn' ]
+  tags: [ 'vpn' ]
