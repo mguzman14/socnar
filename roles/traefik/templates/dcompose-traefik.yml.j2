@@ -23,9 +23,9 @@ services:
       - "--experimental.plugins.bouncer.version=v1.3.3"
       
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "{{ ansible_ip }}:80:80"
+      - "{{ ansible_ip }}:443:443"
+
     networks:
       - network_all
 

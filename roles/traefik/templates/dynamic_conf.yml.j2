@@ -1,18 +1,32 @@
 # /templates/dynamic_conf.yml.j2
 http:
   middlewares:
-    # El de la foto que me pasaste
     whitelist-segura:
       ipAllowList:
         sourceRange:
           - "127.0.0.1/32"
           - "100.64.0.0/10" # Rango genérico de Tailscale
-          - "{{ mi_ip_especifica | default('1.1.1.1/32') }}"
+          - "{{ mi_ip_especifica | default('127.0.0.1/32') }}"
 
-    # El bouncer de CrowdSec (vía archivo)
     bouncer-crowdsec:
       plugin:
         bouncer:
           enabled: true
           crowdsecLapiHost: "crowdsec:8080"
           crowdsecLapiKey: "{{ crowdsec_api_key }}"
+
+  routers:
+    weavescope:
+      rule: "Host(`{{ ansible_dns }}`) || Host(`{{ ansible_ip }}`)"
+      service: weavescope-svc
+      entryPoints:
+        - web
+      middlewares:
+        - whitelist-segura  # Primero comprobamos si la IP es de Tailscale
+        - bouncer-crowdsec  # Segundo comprobamos si CrowdSec la tiene baneada
+
+  services:
+    weavescope-svc:
+      loadBalancer:
+        servers:
+          - url: "http://weavescope:4040"

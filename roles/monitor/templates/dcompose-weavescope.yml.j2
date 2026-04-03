@@ -19,8 +19,8 @@ services:
       traefik.enable: "true"
       traefik.http.routers.weavescope.rule: "Host(`{{ ansible_dns }}`)"
       traefik.http.routers.weavescope.entrypoints: "web"
-      traefik.http.routers.weavescope.middlewares: "whitelist-segura@file"
       traefik.http.services.weavescope.loadbalancer.server.port: "4040"
+      traefik.http.routers.weavescope.service: "weavescope"
       
 networks:
   network_all:
