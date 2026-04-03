@@ -1,7 +1,7 @@
 .vault_pass
 .env
 .todo
-
+*.retry
 
 roles/n8n/files/*
 roles/wazuh/files/*

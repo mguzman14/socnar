@@ -1,24 +1,31 @@
 all:
+  vars:
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    tailscale_key: "{{ lookup('env', 'TS_KEY') }}"
+  
   hosts:
     debian-whale:
-      ansible_host: debian-whale.tailbbc703.ts.net
-      ansible_user: whale
-      server_tailscale_ip: "debian-whale.tailbbc703.ts.net"
-      # ansible_connection: local
+      ansible_host: "{{ lookup('env', 'HOST1_IP') }}"
+      ansible_user: "{{ lookup('env', 'HOST1_USR') }}"
+      ansible_become_password: "{{ lookup('env', 'HOST1_PWD') }}"
+
+    # Definimos el host 2 con su nombre dinámico
     debian-shark:
-      ansible_host: debian-shark.tailbbc703.ts.net
-      ansible_user: shark
-      server_tailscale_ip: "shark-whale.tailbbc703.ts.net"
-      # ansible_connection: local
+      ansible_host: "{{ lookup('env', 'HOST2_IP') }}"
+      ansible_user: "{{ lookup('env', 'HOST2_USR') }}"
+      ansible_become_password: "{{ lookup('env', 'HOST2_PWD') }}"
 
   children:
     wazuh_manager:
       hosts:
+        # Metemos al host 1 en este grupo usando su nombre dinámico
         debian-whale:
+    
     wazuh_agents:
       hosts:
+        # Metemos a ambos en el grupo de agentes
         debian-whale:
         debian-shark:
       vars:
+        # Esta línea es oro: saca automáticamente el nombre del manager para los agentes
         wazuh_manager_host: "{{ groups['wazuh_manager'][0] }}"
-   
