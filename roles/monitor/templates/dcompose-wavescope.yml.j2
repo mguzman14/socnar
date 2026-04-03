@@ -4,24 +4,24 @@ services:
   weavescope:
     image: weaveworks/scope:{{ scope_version | default('latest') }}
     container_name: weavescope
-    network_mode: "host" 
     pid: "host" 
     privileged: true
     restart: always
-    ports:
-      - "8080:4040"
+    networks:
+      - network_all
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     command:
       - "--probe.docker=true"
       - "--weave=false"
-      - "--app.http.address=:9090"
-
+      # Importante: Weave Scope suele escuchar en el 4040 por defecto
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.weavescope.rule: "Host(`debian-whale.tailbbc703.ts.net`)"
+      traefik.http.routers.weavescope.entrypoints: "web"
+      traefik.http.routers.weavescope.middlewares: "whitelist-segura@file"
+      traefik.http.services.weavescope.loadbalancer.server.port: "4040"
+      
 networks:
   network_all:
     external: true
-
-
-
-      
-    

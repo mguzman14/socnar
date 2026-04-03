@@ -1,0 +1,18 @@
+# /templates/dynamic_conf.yml.j2
+http:
+  middlewares:
+    # El de la foto que me pasaste
+    whitelist-segura:
+      ipAllowList:
+        sourceRange:
+          - "127.0.0.1/32"
+          - "100.64.0.0/10" # Rango genérico de Tailscale
+          - "{{ mi_ip_especifica | default('1.1.1.1/32') }}"
+
+    # El bouncer de CrowdSec (vía archivo)
+    bouncer-crowdsec:
+      plugin:
+        bouncer:
+          enabled: true
+          crowdsecLapiHost: "crowdsec:8080"
+          crowdsecLapiKey: "{{ crowdsec_api_key }}"

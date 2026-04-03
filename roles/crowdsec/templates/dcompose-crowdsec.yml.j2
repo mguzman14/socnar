@@ -4,11 +4,11 @@ services:
     container_name: crowdsec
     restart: always
     environment:
-      - COLLECTIONS=crowdsecurity/linux crowdsecurity/traefik
+      - COLLECTIONS=crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/whitelist-good-actors
     volumes:
-      - /opt/socnar/edge/crowdsec/config:/etc/crowdsec
-      - /opt/socnar/edge/crowdsec/data:/var/lib/crowdsec/data
-      - /var/log/traefik:/var/log/traefik:ro
+      - ./crowdsec-config:/etc/crowdsec
+      - ./crowdsec-db:/var/lib/crowdsec/data
+      - /var/log:/var/log:ro
     networks:
       - network_all
 

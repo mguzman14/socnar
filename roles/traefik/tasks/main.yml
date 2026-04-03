@@ -1,18 +1,31 @@
 
-- name: "Generar archivo docker-compose.yml desde Template"
-  ansible.builtin.template:
-    src: dcompose-traefik.yml.j2
-    dest: /opt/traefik/docker-compose.yml
-    mode: '0644'
-  become: true
 
-- name: "Desplegar Traefik + Coraza WAF"
-  tags: [traefik]
+---
+
+- name: "Crear directorios de trabajo"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/traefik
+    - /opt/traefik/config
+
+- name: "Generar archivo docker-compose.yml desde Template"
+  template:
+    src: templates/dcompose-traefik.yml.j2
+    dest: /opt/traefik/docker-compose.yml
+
+- name: "Generar Configuración Dinámica (Middlewares)"
+  template:
+    src: templates/dynamic_conf.yml.j2
+    dest: /opt/traefik/config/dynamic_conf.yml
+
+- name: "Levantar Traefik"
   community.docker.docker_compose_v2:
-    project_src: "/opt/traefik"
+    project_src: /opt/traefik
     state: present
     recreate: always
-  become: true
 
 # --- AQUÍ SIGUEN TUS TAREAS DE CONFIGURACIÓN ---
 

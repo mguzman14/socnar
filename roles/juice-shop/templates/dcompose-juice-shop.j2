@@ -2,6 +2,20 @@ services:
   juice-shop:
     image: bkimminich/juice-shop
     container_name: juice-shop
-    ports:
-      - "{{ juice_shop_port | default('3000') }}:3000"
     restart: always
+    networks:
+      - network_all
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.juice-shop.rule=Host(`{{ ansible_host }}`)"
+      - "traefik.http.routers.juice-shop.entrypoints=web"
+      - "traefik.http.routers.juice-shop.middlewares=bouncer-crowdsec@file,whitelist-segura@file"
+      - "traefik.http.routers.juice-shop.middlewares=whitelist-segura@file,bouncer-crowdsec@file"
+      - "traefik.http.middlewares.crowdsec-bouncer.plugin.bouncer.enabled=true"
+      - "traefik.http.middlewares.crowdsec-bouncer.plugin.bouncer.crowdsecLapiHost=crowdsec:8080"
+      - "traefik.http.middlewares.crowdsec-bouncer.plugin.bouncer.crowdsecLapiKey={{ crowdsec_api_key }}"
+      
+
+networks:
+  network_all:
+    external: true

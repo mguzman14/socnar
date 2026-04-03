@@ -6,6 +6,17 @@
     state: directory
     mode: '0755'
 
+
+- name: "Obtener API Key limpia"
+  shell: |
+    docker exec crowdsec cscli bouncers delete MyTraefikBouncer || true
+    docker exec crowdsec cscli bouncers add MyTraefikBouncer -o raw
+  register: bouncer_result
+
+- name: "Asignar variable"
+  set_fact:
+    crowdsec_api_key: "{{ bouncer_result.stdout | trim }}"
+
 - name: Copiar la plantilla del Docker Compose
   template:
     src: dcompose-juice-shop.j2

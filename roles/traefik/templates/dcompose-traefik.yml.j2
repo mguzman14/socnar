@@ -3,24 +3,25 @@ services:
     image: traefik:v3.0
     container_name: traefik
     restart: always
-    environment:
-      - DOCKER_API_VERSION=1.24
     dns:
       - 100.100.100.100 # IP de Tailscale, para poder entrar con DNS de Tailscale
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/opt/traefik:/etc/traefik"
+      - "/opt/traefik/config:/etc/traefik/config"
+    environment:
+      - DOCKER_API_VERSION=1.54
+      - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=unix:///var/run/docker.sock
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik/config"
+      - "--providers.file.watch=true"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
-      - "--certificatesresolvers.mytlschallenge.acme.email=${SSL_EMAIL}"
-      - "--certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json"
+      - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+      - "--experimental.plugins.bouncer.version=v1.3.3"
+      
     ports:
       - "80:80"
       - "443:443"

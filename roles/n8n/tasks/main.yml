@@ -21,4 +21,11 @@
       N8N_LOG_LEVEL: info
       GENERIC_TIMEZONE: "Europe/Madrid"
       N8N_SECURE_COOKIE: "false"
+
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.n8n.rule: "Host(`debian-whale.tailbbc703.ts.net`)"
+      traefik.http.routers.n8n.entrypoints: "web"
+      traefik.http.routers.n8n.middlewares: "whitelist-segura@file"
+
   become: true
