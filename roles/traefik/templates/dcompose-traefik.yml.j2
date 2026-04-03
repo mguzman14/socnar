@@ -5,6 +5,8 @@ services:
     restart: always
     environment:
       - DOCKER_API_VERSION=1.24
+    dns:
+      - 100.100.100.100 # IP de Tailscale, para poder entrar con DNS de Tailscale
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/opt/traefik:/etc/traefik"
@@ -22,6 +24,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     networks:
       - network_all
 
