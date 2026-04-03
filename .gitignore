@@ -3,5 +3,5 @@
 .todo
 
 
-n8n/files/*
-wazuh/files/*
+roles/n8n/files/*
+roles/wazuh/files/*
