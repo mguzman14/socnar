@@ -24,7 +24,7 @@
 
     labels:
       traefik.enable: "true"
-      traefik.http.routers.n8n.rule: "Host(`{{ ansible_host }}`)"
+      traefik.http.routers.n8n.rule: "Host(`{{ ansible_dns }}`)"
       traefik.http.routers.n8n.entrypoints: "web"
       traefik.http.routers.n8n.middlewares: "whitelist-segura@file"
 

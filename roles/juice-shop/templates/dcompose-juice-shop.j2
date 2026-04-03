@@ -7,7 +7,7 @@ services:
       - network_all
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.juice-shop.rule=Host(`{{ ansible_host }}`)"
+      - "traefik.http.routers.juice-shop.rule=Host(`{{ ansible_dns }}`)"
       - "traefik.http.routers.juice-shop.entrypoints=web"
       - "traefik.http.routers.juice-shop.middlewares=bouncer-crowdsec@file,whitelist-segura@file"
       - "traefik.http.routers.juice-shop.middlewares=whitelist-segura@file,bouncer-crowdsec@file"

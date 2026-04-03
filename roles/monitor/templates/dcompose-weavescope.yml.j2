@@ -17,7 +17,7 @@ services:
       # Importante: Weave Scope suele escuchar en el 4040 por defecto
     labels:
       traefik.enable: "true"
-      traefik.http.routers.weavescope.rule: "Host(`{{ ansible_host }}`)"
+      traefik.http.routers.weavescope.rule: "Host(`{{ ansible_dns }}`)"
       traefik.http.routers.weavescope.entrypoints: "web"
       traefik.http.routers.weavescope.middlewares: "whitelist-segura@file"
       traefik.http.services.weavescope.loadbalancer.server.port: "4040"
