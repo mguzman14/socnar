@@ -12,7 +12,7 @@
 
 - name: Desplegar template de Docker Compose
   template:
-    src: dcompose-wavescope.yml.j2
+    src: dcompose-weavescope.yml.j2
     dest: /opt/weavescope/docker-compose.yml
     mode: '0644'
 
