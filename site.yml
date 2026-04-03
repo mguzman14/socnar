@@ -1,10 +1,10 @@
 - name: "Infraestructura Base"
   hosts: all
   become: true
-  gather_facts: no
+  gather_facts: yes
   roles:
     - role: common
-      tags: [ 'common', 'ssh', 'docker', 'vpn', 'config', 'deploy', 'portainer' ]
+      tags: [ 'ssh', 'docker', 'vpn' ]
 
 - name: "Fail2ban"
   hosts: all
@@ -59,7 +59,16 @@
   gather_facts: no
   roles:
     - role: monitor
-      tags: [ 'monitor' ]
+      tags: [ 'portainer', 'weavescope' ]
+
+
+- name: "Crowdsec"
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - role: crowdsec
+      tags: [ 'crowdsec' ]
 
 
 - name: "Traefik + Coraza"
@@ -69,14 +78,6 @@
   roles:
     - role: traefik
       tags: [ 'traefik' ]
-
-- name: "Crowdsec"
-  hosts: all
-  become: yes
-  gather_facts: no
-  roles:
-    - role: crowdsec
-      tags: [ 'crowdsec' ]
 
 - name: "n8n"
   hosts: all
