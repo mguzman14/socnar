@@ -1,7 +1,7 @@
 .vault_pass
-*.swp
-*.retry
 .env
 .todo
-/host_vars/asd.yml
-/host_vars/udg.yml
+
+
+n8n/files/*
+wazuh/files/*
