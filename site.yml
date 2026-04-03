@@ -24,7 +24,7 @@
     misp_base_dir: "/opt/misp"
     misp_https_port: "8448"
     misp_http_port: "8088"
-    misp_base_url: "https://{{ ansible_host }}:{{ misp_https_port }}"
+    misp_base_url: "https://{{ ansible_dns }}:{{ misp_https_port }}"
     
   roles:
     - role: misp

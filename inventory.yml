@@ -5,13 +5,14 @@ all:
   
   hosts:
     debian-whale:
-      ansible_host: "{{ lookup('env', 'HOST1_IP') }}"
+      ansible_dns: "{{ lookup('env', 'HOST1_DNS') }}"
+      ansible_ip: "{{ lookup('env', 'HOST1_IP') }}"
       ansible_user: "{{ lookup('env', 'HOST1_USR') }}"
       ansible_become_password: "{{ lookup('env', 'HOST1_PWD') }}"
 
     # Definimos el host 2 con su nombre dinámico
     debian-shark:
-      ansible_host: "{{ lookup('env', 'HOST2_IP') }}"
+      ansible_dns: "{{ lookup('env', 'HOST2_DNS') }}"
       ansible_user: "{{ lookup('env', 'HOST2_USR') }}"
       ansible_become_password: "{{ lookup('env', 'HOST2_PWD') }}"
 

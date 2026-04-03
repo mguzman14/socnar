@@ -1,5 +1,0 @@
-# host_vars/asd.yml.example
-ansible_host: ""
-ansible_port: 
-ansible_user: ""
-tailscale_key: ""
