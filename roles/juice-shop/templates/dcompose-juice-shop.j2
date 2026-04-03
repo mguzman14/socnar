@@ -1,0 +1,7 @@
+services:
+  juice-shop:
+    image: bkimminich/juice-shop
+    container_name: juice-shop
+    ports:
+      - "{{ juice_shop_port | default('3000') }}:3000"
+    restart: always

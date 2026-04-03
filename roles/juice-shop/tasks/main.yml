@@ -1,0 +1,25 @@
+---
+
+- name: Crear el directorio del proyecto
+  file:
+    path: "/opt/juice-shop"
+    state: directory
+    mode: '0755'
+
+- name: Copiar la plantilla del Docker Compose
+  template:
+    src: dcompose-juice-shop.j2
+    dest: "/opt/juice-shop/docker-compose.yml"
+
+
+- name: Limpiar contenedores antiguos de Juice Shop
+  community.docker.docker_container:
+    name: juice-shop
+    state: absent
+
+- name: Levantar el contenedor con Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: "/opt/juice-shop"
+    state: present
+    recreate: always  
+    remove_orphans: yes

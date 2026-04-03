@@ -69,3 +69,11 @@
   roles:
     - role: n8n
       tags: [ 'n8n' ]
+
+- name: "Juice-Shop"
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - role: juice-shop
+      tags: [ 'juice-shop' ]
