@@ -32,11 +32,18 @@ http:
       entryPoints: ["web"]
       # middlewares: ["whitelist-segura"]
 
+    adguard:
+      rule: "Host(`adguard.soc`)"
+      service: adguard-svc
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura"]
+
     juice-shop:
       rule: "Host(`juice.soc`)"
       service: juice-shop-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+      # middlewares: ["whitelist-segura"] 
+
     # misp:
     #   rule: "Host(`misp.soc`)"
     #   service: misp-svc
@@ -66,6 +73,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://{{ ansible_ip }}:4040"
+
+    adguard-svc:
+      loadBalancer:
+        servers:
+          - url: "http://{{ ansible_ip }}:3000"
 
     juice-shop-svc:
       loadBalancer:
