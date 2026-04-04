@@ -1,5 +1,9 @@
 # /templates/dynamic_conf.yml.j2
 http:
+  serversTransports:
+    insecureTransport:
+      insecureSkipVerify: true
+
   middlewares:
     whitelist-segura:
       ipAllowList:
@@ -17,16 +21,65 @@ http:
 
   routers:
     weavescope:
-      rule: "Host(`{{ ansible_dns }}`) || Host(`{{ ansible_ip }}`)"
+      rule: "Host(`weavescope.soc`)"
       service: weavescope-svc
-      entryPoints:
-        - web
-      middlewares:
-        - whitelist-segura  # Primero comprobamos si la IP es de Tailscale
-        - bouncer-crowdsec  # Segundo comprobamos si CrowdSec la tiene baneada
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+
+    traefik-dashboard:
+      rule: "Host(`traefik.soc`)"
+      service: api@internal
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura"]
+
+    juice-shop:
+      rule: "Host(`juice.soc`)"
+      service: juice-shop-svc
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+
+    portainer:
+      rule: "Host(`portainer.soc`)"
+      service: portainer-svc
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+
+    n8n:
+      rule: "Host(`n8n.soc`)"
+      service: n8n-svc
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura"]
+
+    wazuh:
+      rule: "Host(`wazuh.soc`)"
+      service: wazuh-svc
+      entryPoints: ["web"]
+      # middlewares: ["whitelist-segura"]
 
   services:
     weavescope-svc:
       loadBalancer:
         servers:
-          - url: "http://weavescope:4040"
+          - url: "http://{{ ansible_ip }}:4040"
+
+    juice-shop-svc:
+      loadBalancer:
+        servers:
+          - url: "http://{{ ansible_ip }}:3001"
+
+    portainer-svc:
+      loadBalancer:
+        serversTransport: insecureTransport
+        servers:
+          - url: "https://{{ ansible_ip }}:9443"
+    
+    n8n-svc:
+      loadBalancer:
+        servers:
+          - url: "http://{{ ansible_ip }}:5678"
+
+    wazuh-svc:
+      loadBalancer:
+        serversTransport: insecureTransport
+        servers:
+          - url: "https://{{ ansible_ip }}:5601"

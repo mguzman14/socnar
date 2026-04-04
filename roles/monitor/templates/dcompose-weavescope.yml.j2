@@ -7,6 +7,8 @@ services:
     pid: "host" 
     privileged: true
     restart: always
+    ports:
+      - "4040:4040"
     networks:
       - network_all
     volumes:
@@ -16,11 +18,7 @@ services:
       - "--weave=false"
       # Importante: Weave Scope suele escuchar en el 4040 por defecto
     labels:
-      traefik.enable: "true"
-      traefik.http.routers.weavescope.rule: "Host(`{{ ansible_dns }}`)"
-      traefik.http.routers.weavescope.entrypoints: "web"
-      traefik.http.services.weavescope.loadbalancer.server.port: "4040"
-      traefik.http.routers.weavescope.service: "weavescope"
+      - "traefik.enable=true"
       
 networks:
   network_all:
