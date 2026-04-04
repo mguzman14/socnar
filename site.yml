@@ -53,13 +53,13 @@
     - role: audit
       tags: [ 'audit' ]
 
-- name: "Maintainance"
+- name: "Maintenance"
   hosts: all
   become: yes
   gather_facts: no
   roles:
-    - role: maintainance
-      tags: [ 'maintainance' ]
+    - role: maintenance
+      tags: [ 'maintenance' ]
 
 - name: "Monitoring tools"
   hosts: all
