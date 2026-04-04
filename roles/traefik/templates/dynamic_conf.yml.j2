@@ -76,11 +76,11 @@ http:
       entryPoints: ["web"]
       middlewares: ["bouncer-crowdsec", "rate-limiter"] 
 
-    # misp:
-    #   rule: "Host(`misp.soc`)"
-    #   service: misp-svc
-    #   entryPoints: ["websecure"]
-    #   # middlewares: ["bouncer-crowdsec"]
+    misp:
+      rule: "Host(`misp.soc`)"
+      service: misp-svc
+      entryPoints: ["web"]
+      middlewares: ["bouncer-crowdsec"]
 
     portainer:
       rule: "Host(`portainer.soc`)"
@@ -116,10 +116,10 @@ http:
         servers:
           - url: "http://{{ ansible_ip }}:3001" 
 
-    # misp-svc:
-    #   loadBalancer:
-    #     servers:
-    #       - url: "https://{{ ansible_ip }}:8448"
+    misp-svc:
+      loadBalancer:
+        servers:
+          - url: "https://{{ ansible_ip }}:8448"
 
     portainer-svc:
       loadBalancer:

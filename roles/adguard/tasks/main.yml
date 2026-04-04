@@ -23,3 +23,5 @@
       - /opt/adguard/work:/opt/adguard/work
       - /opt/adguard/conf:/opt/adguard/conf
   become: true
+
+  # FIX ME: No resuelve la IP de MISP

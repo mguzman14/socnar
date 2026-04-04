@@ -123,8 +123,8 @@ services:
       start_period: 30s
       start_interval: 30s
     ports:
-      - "{{ misp_http_port }}:80"
-      - "{{ misp_https_port }}:443"
+      - "8088:80"
+      - "8448:443"
     volumes:
       - "./configs/:/var/www/MISP/app/Config/:Z"
       - "./logs/:/var/www/MISP/app/tmp/logs/:Z"

@@ -21,11 +21,7 @@
   gather_facts: no
   vars:
     misp_base_dir: "/opt/misp"
-    misp_https_port: "8448"
-    misp_http_port: "8088"
-    misp_base_url: "https://{{ ansible_dns }}:8448"
-
-
+    misp_base_url: "https://{{ ansible_ip }}:8448" # FIX ME: No funciona con el DNS  de tailscale
   roles:
     - role: misp
       tags: [ 'misp' ]

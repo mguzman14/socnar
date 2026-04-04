@@ -30,24 +30,3 @@
     state: present
     pull: always  # Estándar: intentar bajar la última versión si no existe
     remove_orphans: yes # Limpia contenedores antiguos si cambias el nombre en el .yml
-
-- name: "MISP | Esperar a que el puerto HTTPS esté abierto"
-  wait_for:
-    port: "{{ misp_https_port }}" 
-    delay: 10
-    timeout: 300
-
-# - name: "MISP | Verificar respuesta de la interfaz web"
-#   uri:
-#     # Cambia la URL para que ataque al NOMBRE DEL CONTENEDOR, no a la IP externa
-#     url: "https://misp-misp-core-1:80" # O el nombre exacto de tu contenedor core
-#     validate_certs: no
-#     status_code: [200, 302, 403] # Añadimos 403 por si acaso
-#   register: misp_web_status
-#   until: misp_web_status.status in [200, 302, 403]
-#   retries: 20
-#   delay: 2
-
-# - name: "MISP | Reportar estado"
-#   debug:
-#     msg: "MISP está arriba en {{ misp_base_url }} respondiendo con código {{ misp_web_status.status }}"
