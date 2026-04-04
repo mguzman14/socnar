@@ -20,12 +20,12 @@
   become: yes
   gather_facts: no
   vars:
-    # --- VARIABLES GLOBALES PARA MISP ---
     misp_base_dir: "/opt/misp"
     misp_https_port: "8448"
     misp_http_port: "8088"
-    misp_base_url: "https://{{ ansible_dns }}:{{ misp_https_port }}"
-    
+    misp_base_url: "https://{{ ansible_dns }}:8448"
+
+
   roles:
     - role: misp
       tags: [ 'misp' ]
