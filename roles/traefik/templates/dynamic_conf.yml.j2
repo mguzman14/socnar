@@ -86,7 +86,7 @@ http:
       rule: "Host(`portainer.soc`)"
       service: portainer-svc
       entryPoints: ["web"]
-      middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+      middlewares: ["bouncer-crowdsec"]
 
     n8n:
       rule: "Host(`n8n.soc`)"
@@ -98,7 +98,7 @@ http:
       rule: "Host(`wazuh.soc`)"
       service: wazuh-svc
       entryPoints: ["web"]
-      middlewares: ["bouncer-crowdsec"]
+      # middlewares: ["bouncer-crowdsec"]
 
   services:
     weavescope-svc:
