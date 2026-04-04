@@ -18,6 +18,38 @@ http:
           enabled: true
           crowdsecLapiHost: "crowdsec:8080"
           crowdsecLapiKey: "{{ crowdsec_api_key }}"
+    # 2. Limitador de velocidad para evitar ataques de fuerza bruta
+    rate-limiter:
+      rateLimit:
+        average: 100
+        period: 1m
+        burst: 50
+
+    # 3. Limitador de conexiones concurrentes
+    concurrent-limiter:
+      inFlightReq:
+        amount: 10
+        sourceCriterion:
+          ipStrategy:
+            depth: 1
+
+    # 4. Cabeceras de Seguridad (Protección contra XSS, Clickjacking, etc.)
+    security-headers:
+      headers:
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow"
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        customFrameOptionsValue: "DENY"
+
+    # 5. La "Cadena" (Chain): Agrupa varios middlewares en uno solo
+    external-secured:
+      chain:
+        middlewares:
+          - rate-limiter
+          - concurrent-limiter
+          - security-headers
 
   routers:
     weavescope:
