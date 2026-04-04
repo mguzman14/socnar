@@ -56,49 +56,49 @@ http:
       rule: "Host(`weavescope.soc`)"
       service: weavescope-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+      middlewares: ["bouncer-crowdsec"]
 
     traefik-dashboard:
       rule: "Host(`traefik.soc`)"
       service: api@internal
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura"]
+      middlewares: ["bouncer-crowdsec"]
 
     adguard:
       rule: "Host(`adguard.soc`)"
       service: adguard-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura"]
+      middlewares: ["bouncer-crowdsec"]
 
     juice-shop:
       rule: "Host(`juice.soc`)"
       service: juice-shop-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura"] 
+      middlewares: ["bouncer-crowdsec", "rate-limiter"] 
 
     # misp:
     #   rule: "Host(`misp.soc`)"
     #   service: misp-svc
     #   entryPoints: ["websecure"]
-    #   # middlewares: ["whitelist-segura"]
+    #   # middlewares: ["bouncer-crowdsec"]
 
     portainer:
       rule: "Host(`portainer.soc`)"
       service: portainer-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura", "bouncer-crowdsec"]
+      middlewares: ["whitelist-segura", "bouncer-crowdsec"]
 
     n8n:
       rule: "Host(`n8n.soc`)"
       service: n8n-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura"]
+      middlewares: ["bouncer-crowdsec"]
 
     wazuh:
       rule: "Host(`wazuh.soc`)"
       service: wazuh-svc
       entryPoints: ["web"]
-      # middlewares: ["whitelist-segura"]
+      middlewares: ["bouncer-crowdsec"]
 
   services:
     weavescope-svc:
