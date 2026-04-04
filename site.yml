@@ -102,3 +102,11 @@
   roles:
     - role: juice-shop
       tags: [ 'juice-shop' ]
+
+- name: "AdGuard"
+  hosts: all
+  become: yes
+  gather_facts: no
+  roles:
+    - role: adguard
+      tags: [ 'adguard' ]

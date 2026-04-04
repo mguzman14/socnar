@@ -1,0 +1,25 @@
+---
+- name: "Crear directorios para AdGuard Home"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/adguard/work
+    - /opt/adguard/conf
+  become: true
+
+- name: "Desplegar AdGuard Home (El cerebro DNS)"
+  community.docker.docker_container:
+    name: adguardhome
+    image: adguard/adguardhome:latest
+    restart_policy: always
+    network_mode: host # IMPORTANTE: El DNS necesita la red 'host' o mapear el puerto 53
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "3000:3000/tcp" # Panel de control inicial
+    volumes:
+      - /opt/adguard/work:/opt/adguard/work
+      - /opt/adguard/conf:/opt/adguard/conf
+  become: true
