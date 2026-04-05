@@ -17,6 +17,8 @@
       - "5678:5678"
     volumes:
       - /opt/n8n:/home/node/.n8n
+    networks:
+      - name: network_all
     env:
       N8N_LOG_LEVEL: info
       GENERIC_TIMEZONE: "Europe/Madrid"
