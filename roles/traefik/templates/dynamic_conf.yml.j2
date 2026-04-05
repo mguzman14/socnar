@@ -104,36 +104,36 @@ http:
     weavescope-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_ip }}:4040"
+          - url: "http://{{ ansible_host }}:4040"
 
     adguard-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_ip }}:3000"
+          - url: "http://{{ ansible_host }}:3000"
 
     juice-shop-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_ip }}:3001" 
+          - url: "http://{{ ansible_host }}:3001" 
 
     misp-svc:
       loadBalancer:
         servers:
-          - url: "https://{{ ansible_ip }}:8448"
+          - url: "https://{{ ansible_host }}:8448"
 
     portainer-svc:
       loadBalancer:
         serversTransport: insecureTransport
         servers:
-          - url: "https://{{ ansible_ip }}:9443"
+          - url: "https://{{ ansible_host }}:9443"
     
     n8n-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_ip }}:5678"
+          - url: "http://{{ ansible_host }}:5678"
 
     wazuh-svc:
       loadBalancer:
         serversTransport: insecureTransport
         servers:
-          - url: "https://{{ ansible_ip }}:5601"
+          - url: "https://{{ ansible_host }}:5601"

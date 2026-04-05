@@ -2,7 +2,7 @@
 
   <integration>
     <name>slack</name>
-    <hook_url>http://{{ ansible_ip }}:5678/webhook/n8n-webhook</hook_url> <!-- roles/n8n/files/n8n-webhook.json -->
+    <hook_url>http://{{ ansible_host }}:5678/webhook/n8n-webhook</hook_url> <!-- roles/n8n/files/n8n-webhook.json -->
     <alert_format>json</alert_format>
     <level>0</level>
   </integration>
