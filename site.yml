@@ -26,12 +26,12 @@
     - role: misp
       tags: [ 'misp' ]
   
-# - name: "Wazuh manager y la tropa"
-#   hosts: wazuh-manager
-#   become: yes
-#   roles:
-#     - role: wazuh
-#       tags: [ 'wazuh-manager' ]
+- name: "Wazuh manager y la tropa"
+  hosts: wazuh_manager
+  become: yes
+  roles:
+    - role: wazuh
+      tags: [ 'wazuh-manager' ]
 
 - name: "Wazuh Agent"
   hosts: wazuh_agents

@@ -9,6 +9,32 @@
 # TODO: AUTOMATIZAR CONFIG (con templates) Y DESPLIEGUE DE WAZUH CON ANSIBLE
 
 
+---
+- name: "Directorio base en /opt/wazuh"
+  ansible.builtin.file:
+    path: "/opt/wazuh"
+    state: directory
+    mode: '0755'
+
+- name: "Plantilla del Docker Compose"
+  ansible.builtin.template:
+    src: templates/dcompose-wazuh.yml.j2
+    dest: "/opt/wazuh/docker-compose.yml"
+    mode: '0644'
+
+- name: "Levantar servicios y limpiar huerfanos"
+  community.docker.docker_compose_v2:
+    project_src: "/opt/wazuh"
+    state: present
+    remove_orphans: true
+  register: wazuh_status
+
+# - name: "Configurar API y reiniciar Manager"
+#   ansible.builtin.shell: |
+#     docker cp /opt/wazuh/api.yaml wazuh-manager:/var/ossec/api/configuration/api.yaml
+#     docker restart wazuh-manager
+#   when: wazuh_status.changed
+
 # - name: Desplegar Wazuh Single Node con Docker
 #   hosts: debian-whale
 #   become: yes
