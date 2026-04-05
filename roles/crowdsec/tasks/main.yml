@@ -7,6 +7,35 @@
     owner: root  # O tu usuario si prefieres
     group: root
 
+- name: "Limpiar TODO para evitar conflictos de Docker"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/opt/crowdsec/config/acquis.yaml"  # Borra si es archivo O carpeta
+    - "/var/log/crowdsec.log"           # Borra si es archivo O carpeta
+
+- name: "Crear estructura de directorios limpia"
+  ansible.builtin.file:
+    path: "/opt/crowdsec/config"
+    state: directory
+    mode: '0755'
+
+- name: "Crear archivo acquis.yaml (ARCHIVO REAL)"
+  ansible.builtin.template:
+    src: acquis.yml.j2
+    dest: "/opt/crowdsec/config/acquis.yaml"
+    mode: '0644'
+
+- name: "Crear archivo de log (ARCHIVO REAL)"
+  ansible.builtin.file:
+    path: "/var/log/crowdsec.log"
+    state: touch
+    mode: '0666'
+
+
+
+
 - name: "Generar archivo docker-compose.yml desde Template"
   template:
     src: dcompose-crowdsec.yml.j2

@@ -94,46 +94,46 @@ http:
       entryPoints: ["web"]
       middlewares: ["bouncer-crowdsec"]
 
-    wazuh:
-      rule: "Host(`wazuh.soc`)"
-      service: wazuh-svc
-      entryPoints: ["web"]
+    # wazuh:
+    #   rule: "Host(`wazuh.soc`)"
+    #   service: wazuh-svc
+    #   entryPoints: ["web"]
       # middlewares: ["bouncer-crowdsec"]
 
   services:
     weavescope-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_host }}:4040"
+          - url: "http://weavescope:4040"
 
     adguard-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_host }}:3000"
+          - url: "http://adguardhome:3000" # Nombre del contenedor:puerto interno
 
     juice-shop-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_host }}:3001" 
+          - url: "http://juice-shop:3000" 
 
     misp-svc:
       loadBalancer:
         servers:
-          - url: "https://{{ ansible_host }}:8448"
+          - url: "http://misp-misp-core-1:80"
 
     portainer-svc:
       loadBalancer:
         serversTransport: insecureTransport
         servers:
-          - url: "https://{{ ansible_host }}:9443"
+          - url: "http://portainer:9000"
     
     n8n-svc:
       loadBalancer:
         servers:
-          - url: "http://{{ ansible_host }}:5678"
+          - url: "http://n8n:5678"
 
-    wazuh-svc:
-      loadBalancer:
-        serversTransport: insecureTransport
-        servers:
-          - url: "https://{{ ansible_host }}:5601"
+    # wazuh-svc:
+    #   loadBalancer:
+    #     serversTransport: insecureTransport
+    #     servers:
+    #       - url: "https://wazuh-dashboard:5601"

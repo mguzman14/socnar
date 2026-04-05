@@ -4,16 +4,24 @@ services:
     container_name: crowdsec
     restart: always
     environment:
-      - COLLECTIONS=crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/whitelist-good-actors
+      - COLLECTIONS=crowdsecurity/traefik crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/nginx
+      - CROWDSEC_LOG_FILE=/var/log/crowdsec.log
+      - GID=${GID-1000}
     volumes:
-      - ./crowdsec-config:/etc/crowdsec
-      - ./crowdsec-db:/var/lib/crowdsec/data
-      - /var/log:/var/log:ro
+      - /var/log/crowdsec.log:/var/log/crowdsec.log
+      - /opt/crowdsec/config:/etc/crowdsec
+      - logs:/var/log/nginx
+      - crowdsec-db:/var/lib/crowdsec/data/
     networks:
       - network_all
+    ports:
+      - "{{ ansible_host }}:8080:8080"
 
 networks:
   network_all:
     external: true
 
-    
+volumes:
+  logs:
+  crowdsec-db:
+  crowdsec-config:
