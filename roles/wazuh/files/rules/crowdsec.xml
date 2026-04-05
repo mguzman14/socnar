@@ -1,0 +1,12 @@
+<group name="crowdsec,">
+  <rule id="100020" level="10">
+    <program_name>crowdsec_event</program_name>
+    <description>CrowdSec: Alerta detectada</description>
+  </rule>
+
+  <rule id="100021" level="12">
+    <if_sid>100010</if_sid>
+    <field name="value">\.+</field>
+    <description>CrowdSec: IP $(value) bloqueada por $(reason)</description>
+  </rule>
+</group>

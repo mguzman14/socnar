@@ -9,4 +9,7 @@
     <location>/var/log/traefik/access.log</location>
   </localfile>
   
-  
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/log/crowdsec.log</location>
+  </localfile>  
