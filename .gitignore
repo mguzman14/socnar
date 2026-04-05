@@ -3,5 +3,5 @@
 .todo
 *.retry
 
-roles/n8n/files/*
-roles/wazuh/files/*
+dev/*
+!dev/.gitkeep

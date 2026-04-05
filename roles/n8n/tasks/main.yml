@@ -21,6 +21,8 @@
       N8N_LOG_LEVEL: info
       GENERIC_TIMEZONE: "Europe/Madrid"
       N8N_SECURE_COOKIE: "false"
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
+      N8N_PROXY_HOPS: "1" # traefik
 
     labels:
       traefik.enable: "true"

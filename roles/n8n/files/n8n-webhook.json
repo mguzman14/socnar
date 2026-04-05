@@ -1,0 +1,34 @@
+{
+  "name": "wazuh-n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "n8n-webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4d828a59-e690-47ea-8e81-58350643a1ea",
+      "name": "Webhook/wazuh",
+      "webhookId": "1f01ad2f-5a50-4365-8d1a-0c3d54fb813e"
+    }
+  ],
+  "pinData": {},
+  "connections": {},
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a2d0f62e-58a0-4a77-8bc8-dac8a735b4d5",
+  "meta": {
+    "instanceId": "a1c121436116c3a1210d637e9dda052b95d795e92fb64b9349c241391d55f533"
+  },
+  "id": "RWoj3lPwkvObTZz9",
+  "tags": []
+}

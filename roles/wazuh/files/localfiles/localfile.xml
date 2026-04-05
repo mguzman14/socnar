@@ -1,0 +1,12 @@
+
+  <localfile>
+    <log_format>syslog</log_format>
+    <location>/var/ossec/logs/active-responses.log</location>
+  </localfile>
+
+  <localfile>
+    <log_format>apache</log_format>
+    <location>/var/log/traefik/access.log</location>
+  </localfile>
+  
+  
