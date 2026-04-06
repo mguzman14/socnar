@@ -11,7 +11,8 @@ services:
       - /var/log/crowdsec.log:/var/log/crowdsec.log
       - /opt/crowdsec/config:/etc/crowdsec
       - logs:/var/log/nginx
-      - crowdsec-db:/var/lib/crowdsec/data/
+      - /opt/crowdsec/data:/var/lib/crowdsec/data
+      - /var/log/traefik:/var/log/traefik:ro
     networks:
       - network_all
     ports:

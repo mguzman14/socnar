@@ -1,10 +1,11 @@
+# SSH logs
 filenames:
-  - /var/log/nginx/*.log
-  - /var/log/crowdsec.log
+  - /var/log/auth.log
 labels:
   type: syslog
 ---
+# Traefik logs
 filenames:
-  - /var/log/traefik/*.log
+  - /var/log/traefik/access.log
 labels:
   type: traefik
