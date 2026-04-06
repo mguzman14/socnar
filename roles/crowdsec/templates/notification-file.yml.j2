@@ -1,0 +1,5 @@
+type: file
+log_level: info
+format: |
+  {% raw %}{{. | toJson}}{% endraw %}
+filename: /etc/crowdsec/notifications/crowdsec_alerts.json
