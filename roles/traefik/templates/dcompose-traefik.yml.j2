@@ -11,6 +11,8 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/opt/traefik:/etc/traefik"
       - "/opt/traefik/config:/etc/traefik/config"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/log/traefik:/var/log/traefik"
     environment:
       - DOCKER_API_VERSION=1.54
       - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=unix:///var/run/docker.sock
@@ -24,6 +26,9 @@ services:
       - "--entrypoints.web.address=:80"
       - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
       - "--experimental.plugins.bouncer.version=v1.3.3"
+      - "--accesslog=true"
+      - "--accesslog.filepath=/var/log/traefik/access.log"
+      - "--accesslog.format=json"
       
     ports:
       - "{{ ansible_host }}:80:80"

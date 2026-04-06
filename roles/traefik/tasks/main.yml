@@ -10,6 +10,15 @@
   loop:
     - /opt/traefik
     - /opt/traefik/config
+    - /var/log/traefik
+
+- name: Asegurar que el archivo access.log existe
+  file:
+    path: "/var/log/traefik/access.log"
+    state: touch
+    mode: '0666'
+
+
 
 - name: "Generar archivo docker-compose.yml desde Template"
   template:

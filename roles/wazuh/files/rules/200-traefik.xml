@@ -1,0 +1,16 @@
+<group name="traefik,accesslog,">
+  <rule id="200000" level="3">
+    <decoded_as>json</decoded_as>
+    <field name="DownstreamStatus">403|429</field>
+    <description>Traefik: Bloqueo preventivo (403/429) en $(RequestHost)</description>
+  </rule>
+
+  <rule id="200001" level="12" frequency="10" timeframe="60">
+    <if_matched_sid>200000</if_matched_sid>
+    <same_source_ip />
+    <description>Traefik: ATAQUE DETECTADO desde $(ClientAddr)</description>
+    <mitre>
+      <id>T1498</id>
+    </mitre>
+  </rule>
+</group>

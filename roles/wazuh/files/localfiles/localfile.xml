@@ -5,7 +5,7 @@
   </localfile>
 
   <localfile>
-    <log_format>apache</log_format>
+    <log_format>json</log_format>
     <location>/var/log/traefik/access.log</location>
   </localfile>
   
