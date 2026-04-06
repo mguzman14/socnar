@@ -79,7 +79,7 @@ http:
     misp:
       rule: "Host(`misp.soc`)"
       service: misp-svc
-      entryPoints: ["web"]
+      entryPoints: ["websecure"]
       middlewares: ["bouncer-crowdsec"]
 
     portainer:
@@ -118,8 +118,9 @@ http:
 
     misp-svc:
       loadBalancer:
+        serversTransport: insecureTransport
         servers:
-          - url: "http://misp-misp-core-1:8448"
+          - url: "https://misp-misp-core-1:443"
 
     portainer-svc:
       loadBalancer:
