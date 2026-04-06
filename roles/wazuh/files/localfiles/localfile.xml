@@ -13,3 +13,8 @@
     <log_format>syslog</log_format>
     <location>/var/log/crowdsec.log</location>
   </localfile>  
+
+  <localfile>
+    <log_format>json</log_format>
+    <location>/var/ossec/logs/crowdsec_alerts.json</location>
+  </localfile> 

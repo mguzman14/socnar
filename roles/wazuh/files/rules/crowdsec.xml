@@ -1,12 +1,7 @@
-<group name="crowdsec,">
+<group name="crowdsec_custom">
   <rule id="100020" level="10">
-    <program_name>crowdsec_event</program_name>
-    <description>CrowdSec: Alerta detectada</description>
-  </rule>
-
-  <rule id="100021" level="12">
-    <if_sid>100010</if_sid>
-    <field name="value">\.+</field>
-    <description>CrowdSec: IP $(value) bloqueada por $(reason)</description>
+    <decoded_as>json</decoded_as>
+    <field name="kind">cscli</field>
+    <description>CrowdSec: Decisión detectada (IP: $(source.ip))</description>
   </rule>
 </group>
