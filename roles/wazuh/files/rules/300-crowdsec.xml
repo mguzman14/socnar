@@ -1,7 +1,19 @@
-<group name="crowdsec_custom">
-  <rule id="100020" level="10">
-    <decoded_as>json</decoded_as>
-    <field name="kind">cscli</field>
-    <description>CrowdSec: Decisión detectada (IP: $(source.ip))</description>
+<group name="crowdsec,">
+
+  <rule id="300000" level="3">
+    <decoded_as>syslog</decoded_as>
+    <match>crowdsec</match>
+    <description>CrowdSec: Mensaje detectado en logs</description>
   </rule>
+
+  <rule id="300001" level="10">
+    <if_sid>300000</if_sid>
+    <match>is banned|Adding decision|Ban|ban on Ip</match>
+    <description>CrowdSec: Se ha aplicado un bloqueo de IP</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+    <group>active_response,pci_dss_11.4,</group>
+  </rule>
+
 </group>
