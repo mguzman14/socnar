@@ -6,6 +6,8 @@ services:
   mail:
     image: ${REGISTRY_MIRROR_URL:-}ghcr.io/egos-tech/smtp:1.1.3
     restart: always
+    networks:
+      - network_all
     environment:
       # For use with Amazon SES relay
       - "SES_USER=${SES_USER}"
@@ -23,6 +25,8 @@ services:
   redis:
     image: ${REGISTRY_MIRROR_URL:-}valkey/valkey:7.2
     restart: always
+    networks:
+      - network_all
     command: |
       sh -c '
         if [ "$${ENABLE_REDIS_EMPTY_PASSWORD:-false}" = "true" ]; then
@@ -52,10 +56,13 @@ services:
     volumes:
       - cache_data:/data:Z
 
+
   db:
     # We use MariaDB because it supports ARM and has the expected collations
     image: ${REGISTRY_MIRROR_URL:-}mariadb:10.11
     restart: always
+    networks:
+      - network_all
     environment:
       - "MYSQL_USER=${MYSQL_USER:-misp}"
       - "MYSQL_PASSWORD=${MYSQL_PASSWORD:-example}"
@@ -86,6 +93,8 @@ services:
   misp-core:
     image: ${REGISTRY_MIRROR_URL:-}ghcr.io/misp/misp-docker/misp-core:${CORE_RUNNING_TAG:-latest}
     restart: always
+    networks:
+      - network_all
     cap_add:
       - AUDIT_WRITE
     build:
@@ -334,6 +343,8 @@ services:
   misp-modules:
     image: ${REGISTRY_MIRROR_URL:-}ghcr.io/misp/misp-docker/misp-modules:${MODULES_RUNNING_TAG:-latest}
     restart: always
+    networks:
+      - network_all
     build:
       context: modules/.
       args:
