@@ -1,40 +1,37 @@
-
-- name: "Asegurar que el directorio de configuración existe"
-  file:
-    path: "/opt/crowdsec"
-    state: directory
-    mode: '0755'
-    owner: root  # O tu usuario si prefieres
-    group: root
-
-- name: "Limpiar TODO para evitar conflictos de Docker"
+- name: "1. Limpiar restos para evitar el error de carpeta vs archivo"
+  become: true
   ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop:
-    - "/opt/crowdsec/config/acquis.yaml"  # Borra si es archivo O carpeta
-    - "/var/log/crowdsec.log"           # Borra si es archivo O carpeta
+    - "/var/log/crowdsec.log"
+    - "/opt/crowdsec/config/acquis.yaml"
 
-- name: "Crear estructura de directorios limpia"
+- name: "2. Asegurar directorios de configuración"
+  become: true
   ansible.builtin.file:
     path: "/opt/crowdsec/config"
     state: directory
     mode: '0755'
 
-- name: "Crear archivo acquis.yaml (ARCHIVO REAL)"
-  ansible.builtin.template:
-    src: acquis.yml.j2
-    dest: "/opt/crowdsec/config/acquis.yaml"
+- name: "3. Crear el archivo de log (COMO ARCHIVO REAL)"
+  become: true
+  ansible.builtin.file:
+    path: /var/log/crowdsec.log
+    state: touch
+    owner: root
+    group: root
     mode: '0644'
 
-- name: "Crear archivo de log (ARCHIVO REAL)"
-  ansible.builtin.file:
-    path: "/var/log/crowdsec.log"
-    state: touch
-    mode: '0666'
-
-
-
+- name: "4. Generar configuración desde templates"
+  become: true
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  loop:
+    - { src: 'acquis.yml.j2', dest: '/opt/crowdsec/config/acquis.yaml' }
+    - { src: 'profiles.yml.j2', dest: '/opt/crowdsec/config/profiles.yaml' }
 
 - name: "Generar archivo docker-compose.yml desde Template"
   template:
@@ -57,8 +54,9 @@
 - name: Generar API Key para el bouncer de Traefik
   ansible.builtin.shell: docker exec crowdsec cscli bouncers add TraefikBouncer -o raw
   register: bouncer_output
+  when: crowdsec_api_key is none or crowdsec_api_key == ""
   # Esta vez no se saltará, así que siempre tendrá stdout
 
 - name: Guardar la key como una "fact" global
   ansible.builtin.set_fact:
-    crowdsec_api_key: "{{ bouncer_output.stdout | trim }}"
+    crowdsec_api_key: "{{ bouncer_output.stdout | trim if bouncer_output.stdout is defined else crowdsec_api_key }}"

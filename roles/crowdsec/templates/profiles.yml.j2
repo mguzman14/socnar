@@ -1,9 +1,9 @@
 name: default_ip_remediation
 filters:
- - Alert.Remediation == true && Alert.GetScope() == "Ip"
+  - Alert.Remediation == true && Alert.GetScope() == "Ip"
 notifications:
- - file_default # Nombre que CrowdSec da por defecto al plugin 'file'
+  - file_default
 decisions:
- - type: ban
-   duration: 4h
+  - type: ban
+    duration: 4h
 on_success: break
