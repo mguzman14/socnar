@@ -5,7 +5,7 @@
     creates: /usr/bin/tailscale
 
 - name: "VPN | Autenticar en Tailscale (Requiere AuthKey en variables)"
-  command: tailscale up --authkey={{ tailscale_authkey }}
+  command: tailscale up --authkey={{ lookup('env', 'TS_KEY') }}
   register: tailscale_result
   changed_when: "'is already running' not in tailscale_result.stderr"
   when: tailscale_authkey is defined

@@ -70,6 +70,8 @@
   hosts: all
   become: yes
   gather_facts: no
+  vars:
+    crowdsec_api_key: "{{ lookup('env', 'CROWDSEC_API_KEY') }}"
   roles:
     - role: crowdsec
       tags: [ 'crowdsec' ]
@@ -79,6 +81,8 @@
   hosts: all
   become: yes
   gather_facts: no
+  vars:
+    crowdsec_api_key: "{{ lookup('env', 'CROWDSEC_API_KEY') }}"
   roles:
     - role: traefik
       tags: [ 'traefik' ]
