@@ -9,7 +9,7 @@
 # TODO: AUTOMATIZAR CONFIG (con templates) Y DESPLIEGUE DE WAZUH CON ANSIBLE
 
 
----
+
 - name: "Directorio base en /opt/wazuh"
   ansible.builtin.file:
     path: "/opt/wazuh"

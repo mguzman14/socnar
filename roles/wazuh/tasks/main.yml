@@ -1,6 +1,6 @@
-- name: "Wazuh Manager"
-  include_tasks: manager.yml
-  tags: [ 'wazuh-manager' ]
+# - name: "Wazuh Manager"
+#   include_tasks: manager.yml
+#   tags: [ 'wazuh-manager' ]
 
 - name: "Wazuh Agent"
   include_tasks: agent.yml
