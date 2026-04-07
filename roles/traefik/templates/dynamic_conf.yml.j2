@@ -79,7 +79,7 @@ http:
     misp:
       rule: "Host(`misp.soc`)"
       service: misp-svc
-      entryPoints: ["websecure"]
+      entryPoints: ["web"]
       middlewares: ["bouncer-crowdsec"]
 
     portainer:

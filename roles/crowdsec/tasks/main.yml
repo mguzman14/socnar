@@ -47,15 +47,14 @@
 
 
 - name: Eliminar bouncer de Traefik si ya existe
-  ansible.builtin.shell: docker exec crowdsec cscli bouncers delete TraefikBouncer
-  failed_when: false # No importa si falla porque no existe
+  ansible.builtin.shell: docker exec crowdsec cscli bouncers list -o raw | cut -d',' -f1 | grep -v "name" | xargs -I {} docker exec crowdsec cscli bouncers delete {}
+  failed_when: false 
   changed_when: false 
 
 - name: Generar API Key para el bouncer de Traefik
   ansible.builtin.shell: docker exec crowdsec cscli bouncers add TraefikBouncer -o raw
   register: bouncer_output
-  when: crowdsec_api_key is none or crowdsec_api_key == ""
-  # Esta vez no se saltará, así que siempre tendrá stdout
+
 
 - name: Guardar la key como una "fact" global
   ansible.builtin.set_fact:
