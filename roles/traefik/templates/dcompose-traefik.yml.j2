@@ -17,6 +17,7 @@ services:
       - DOCKER_API_VERSION=1.54
       - TRAEFIK_PROVIDERS_DOCKER_ENDPOINT=unix:///var/run/docker.sock
     command:
+      - "--log.level=DEBUG"
       - "--api.dashboard=true"              # Activamos el dashboard
       - "--api.insecure=false"              # <--- CAMBIO: No lo abras en el 8080, úsalo por el puerto 80
       - "--providers.docker=true"
