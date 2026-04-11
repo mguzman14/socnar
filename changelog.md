@@ -1,6 +1,10 @@
 
-[Unreleased]: https://github.com/mguzman14/socnar/compare/v2.0.0...HEAD
-[X.Y.Z]: https://github.com/tu-usuario/socnar/releases/tag/v1.0.0
+## [Unreleased](https://github.com/tu-usuario/socnar/releases/tag/)
+### Nuevo
+- Issue #3
+
+
+---
 
 ## [v2.0.0](https://github.com/mguzman14/socnar/releases/tag/2.0.0)
 ### Nuevo
