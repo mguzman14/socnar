@@ -1,7 +1,6 @@
 
 
 ---
-
 - name: "Crear directorios de trabajo"
   file:
     path: "{{ item }}"
