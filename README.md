@@ -6,6 +6,8 @@
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/mguzman14/socnar?color=green)](https://github.com/mguzman14/socnar/releases)
 
+[![Git Graph](https://img.shields.io/badge/View-Git_Graph-blue?style=for-the-badge&logo=git)](https://github.com/mguzman14/socnar/network)
+
 </div>
 
 ---
