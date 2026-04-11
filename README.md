@@ -1,5 +1,14 @@
 # SOCNAR
 
+<div align="center">
+
+[![Ansible](https://img.shields.io/badge/Deployment-Ansible-informational?style=flat&logo=ansible)](https://www.ansible.com/) [![Docker](https://img.shields.io/badge/Container%20Runtime-Docker-2496ED?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/mguzman14/socnar?color=green)](https://github.com/mguzman14/socnar/releases)
+
+</div>
+
+---
 
 ## Introducción
 
@@ -126,7 +135,9 @@ export $(xargs < .env) && ansible-playbook -i inventory.yml site.yml -K -l debia
 export $(xargs < .env) && ansible-playbook -i inventory.yml site.yml -K -l debian-whale -t audit
 ```
 
-## Roadmap
+## Roadmap ![GitHub issues](https://img.shields.io/github/issues/mguzman14/socnar)
+
+
 
 En este enlace se irán añadiendo las próximas tareas: [projects/socnar-core](https://github.com/users/mguzman14/projects/2/views/1)
 
